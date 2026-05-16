@@ -2,101 +2,180 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  AlertCircleIcon,
+  Delete02Icon,
+  GridViewIcon,
+  PencilEdit02Icon,
+  PlusSignIcon,
+  StarIcon,
+} from '@hugeicons/core-free-icons';
 import { apiDelete, apiGet } from '@/lib/api';
 import { Project } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Star, Pencil, Trash2, Plus } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { EmptyState } from '@/components/ui/empty-state';
+import { PageHeader } from '@/components/ui/page-header';
+import { TableSkeleton } from '@/components/ui/skeleton';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export default function ProjectsPage() {
   const [items, setItems] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [toDelete, setToDelete] = useState<Project | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function load() {
     setLoading(true);
-    const data = await apiGet<Project[]>('/projects/admin/all');
-    setItems(data);
-    setLoading(false);
+    setLoadError(false);
+    try {
+      setItems(await apiGet<Project[]>('/projects/admin/all'));
+    } catch {
+      setLoadError(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     load();
   }, []);
 
-  async function onDelete(id: number) {
-    if (!confirm('¿Borrar este proyecto?')) return;
-    await apiDelete(`/projects/${id}`);
-    load();
+  async function confirmDelete() {
+    if (!toDelete) return;
+    setDeleting(true);
+    try {
+      await apiDelete(`/projects/${toDelete.id}`);
+      setToDelete(null);
+      await load();
+    } finally {
+      setDeleting(false);
+    }
   }
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">Projects</h1>
+      <PageHeader title="Proyectos" description="Trabajos del portfolio público.">
         <Button asChild>
           <Link href="/projects/new">
-            <Plus className="h-4 w-4" /> Nuevo
+            <HugeiconsIcon icon={PlusSignIcon} size={16} strokeWidth={2} />
+            Nuevo
           </Link>
         </Button>
-      </div>
+      </PageHeader>
 
       {loading ? (
-        <p className="text-muted-foreground">Cargando…</p>
+        <TableSkeleton />
+      ) : loadError ? (
+        <EmptyState
+          icon={AlertCircleIcon}
+          title="No se pudo cargar"
+          description="Hubo un problema al traer los proyectos."
+          action={
+            <Button variant="outline" onClick={load}>
+              Reintentar
+            </Button>
+          }
+        />
       ) : items.length === 0 ? (
-        <p className="text-muted-foreground">No hay proyectos todavía.</p>
+        <EmptyState
+          icon={GridViewIcon}
+          title="No hay proyectos todavía"
+          description="Creá el primero o importá los de josbert.dev."
+          action={
+            <Button asChild>
+              <Link href="/projects/new">
+                <HugeiconsIcon icon={PlusSignIcon} size={16} strokeWidth={2} />
+                Nuevo proyecto
+              </Link>
+            </Button>
+          }
+        />
       ) : (
-        <div className="rounded-lg border overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-left">
-              <tr>
-                <th className="px-4 py-2">#</th>
-                <th className="px-4 py-2">Título</th>
-                <th className="px-4 py-2">Slug</th>
-                <th className="px-4 py-2">Fecha</th>
-                <th className="px-4 py-2">Orden</th>
-                <th className="px-4 py-2">Estado</th>
-                <th className="px-4 py-2 text-right">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((p) => (
-                <tr key={p.id} className="border-t">
-                  <td className="px-4 py-2 text-muted-foreground">{p.id}</td>
-                  <td className="px-4 py-2 font-medium">
-                    <span className="flex items-center gap-2">
-                      {p.isBest && <Star className="h-3.5 w-3.5 fill-yellow-500 text-yellow-500" />}
-                      {p.title}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 text-muted-foreground">{p.slug}</td>
-                  <td className="px-4 py-2 text-muted-foreground">{p.date ?? '—'}</td>
-                  <td className="px-4 py-2">{p.order}</td>
-                  <td className="px-4 py-2">
-                    <span className={p.isPublished ? 'text-green-500' : 'text-muted-foreground'}>
-                      {p.isPublished ? 'Publicado' : 'Borrador'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 text-right">
-                    <div className="flex justify-end gap-1">
-                      <Button size="icon" variant="ghost" asChild>
-                        <Link href={`/projects/${p.id}`}>
-                          <Pencil className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => onDelete(p.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table>
+          <TableHeader>
+            <tr>
+              <TableHead>Título</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead>Fecha</TableHead>
+              <TableHead className="text-right">Orden</TableHead>
+              <TableHead>Estado</TableHead>
+              <TableHead className="text-right">Acciones</TableHead>
+            </tr>
+          </TableHeader>
+          <TableBody>
+            {items.map((p) => (
+              <TableRow key={p.id}>
+                <TableCell className="font-medium">
+                  <span className="flex items-center gap-2">
+                    {p.isBest && (
+                      <HugeiconsIcon
+                        icon={StarIcon}
+                        size={14}
+                        className="shrink-0 text-accent"
+                        aria-label="Destacado"
+                      />
+                    )}
+                    {p.title}
+                  </span>
+                </TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">{p.slug}</TableCell>
+                <TableCell className="text-muted-foreground">{p.date ?? '—'}</TableCell>
+                <TableCell className="text-right tabular-nums text-muted-foreground">
+                  {p.order}
+                </TableCell>
+                <TableCell>
+                  <Badge variant={p.isPublished ? 'success' : 'muted'}>
+                    {p.isPublished ? 'Publicado' : 'Borrador'}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex justify-end gap-1">
+                    <Button size="icon" variant="ghost" asChild aria-label={`Editar ${p.title}`}>
+                      <Link href={`/projects/${p.id}`}>
+                        <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
+                      </Link>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      aria-label={`Borrar ${p.title}`}
+                      onClick={() => setToDelete(p)}
+                    >
+                      <HugeiconsIcon icon={Delete02Icon} size={16} className="text-destructive" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
+
+      <ConfirmDialog
+        open={toDelete !== null}
+        onOpenChange={(o) => !o && setToDelete(null)}
+        title="Borrar proyecto"
+        description={
+          toDelete
+            ? `"${toDelete.title}" se va a eliminar. Esta acción no se puede deshacer.`
+            : undefined
+        }
+        confirmLabel="Borrar"
+        destructive
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

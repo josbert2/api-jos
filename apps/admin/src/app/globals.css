@@ -4,38 +4,34 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    /* Tokens light. Canales OKLCH (L C H): neutros tintados hue 264, acento cian hue 215. */
+    --background: 0.98 0.003 264;
+    --foreground: 0.21 0.012 264;
+    --card: 0.995 0.001 264;
+    --card-foreground: 0.21 0.012 264;
+    --muted: 0.96 0.004 264;
+    --muted-foreground: 0.5 0.014 264;
+    --border: 0.91 0.005 264;
+    --input: 0.91 0.005 264;
+    --ring: 0.55 0.13 215;
+    --primary: 0.24 0.013 264;
+    --primary-foreground: 0.99 0 0;
+    --accent: 0.55 0.13 215;
+    --accent-foreground: 0.99 0 0;
+    --success: 0.6 0.13 155;
+    --success-foreground: 0.99 0 0;
+    --warning: 0.72 0.15 78;
+    --warning-foreground: 0.24 0.04 78;
+    --destructive: 0.55 0.19 25;
+    --destructive-foreground: 0.99 0 0;
     --radius: 0.5rem;
   }
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+  * {
+    @apply border-border;
   }
 
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

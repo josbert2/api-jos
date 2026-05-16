@@ -1,11 +1,12 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Upload, X, Loader2 } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Cancel01Icon, Image01Icon, Loading03Icon, Upload01Icon } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/ui/button';
 import { getToken } from '@/lib/api';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001';
 
 interface UploadResult {
   key: string;
@@ -30,6 +31,19 @@ async function uploadFile(file: File, folder?: string): Promise<UploadResult> {
   return res.json();
 }
 
+function RemoveButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Quitar"
+      className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-destructive text-destructive-foreground outline-none ring-card transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <HugeiconsIcon icon={Cancel01Icon} size={11} strokeWidth={2.5} />
+    </button>
+  );
+}
+
 export function SingleUploader({
   value,
   onChange,
@@ -49,50 +63,53 @@ export function SingleUploader({
     try {
       const r = await uploadFile(file, folder);
       onChange(r.url || `(falta R2_PUBLIC_URL) key=${r.key}`);
-    } catch (err: any) {
-      setError(err?.message ?? 'Error');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al subir');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-3">
-        {value ? (
-          <div className="relative">
-            <img src={value} alt="" className="h-20 w-32 rounded object-cover border" />
-            <button
-              type="button"
-              onClick={() => onChange('')}
-              className="absolute -top-1 -right-1 rounded-full bg-destructive p-0.5 text-destructive-foreground"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          </div>
-        ) : (
-          <div className="h-20 w-32 rounded border border-dashed flex items-center justify-center text-xs text-muted-foreground">
-            sin imagen
-          </div>
-        )}
-        <div className="flex flex-col gap-1">
-          <input
-            ref={input}
-            type="file"
-            accept="image/*,application/pdf"
-            hidden
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) handle(f);
-              e.target.value = '';
-            }}
+    <div className="flex items-center gap-3">
+      {value ? (
+        <div className="relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={value}
+            alt=""
+            className="h-20 w-32 rounded-lg border border-border object-cover"
           />
-          <Button type="button" size="sm" variant="outline" onClick={() => input.current?.click()} disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-            {loading ? 'Subiendo…' : 'Subir'}
-          </Button>
-          {error && <p className="text-xs text-destructive">{error}</p>}
+          <RemoveButton onClick={() => onChange('')} />
         </div>
+      ) : (
+        <div className="grid h-20 w-32 place-items-center rounded-lg border border-dashed border-border text-muted-foreground">
+          <HugeiconsIcon icon={Image01Icon} size={20} />
+        </div>
+      )}
+      <div className="flex flex-col items-start gap-1">
+        <input
+          ref={input}
+          type="file"
+          accept="image/*,application/pdf"
+          hidden
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) handle(f);
+            e.target.value = '';
+          }}
+        />
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          onClick={() => input.current?.click()}
+          loading={loading}
+        >
+          {!loading && <HugeiconsIcon icon={Upload01Icon} size={15} />}
+          {loading ? 'Subiendo…' : 'Subir'}
+        </Button>
+        {error && <p className="text-xs text-destructive">{error}</p>}
       </div>
     </div>
   );
@@ -121,15 +138,11 @@ export function MultiUploader({
         if (r.url) urls.push(r.url);
       }
       onChange([...value, ...urls]);
-    } catch (err: any) {
-      setError(err?.message ?? 'Error');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al subir');
     } finally {
       setLoading(false);
     }
-  }
-
-  function removeAt(i: number) {
-    onChange(value.filter((_, idx) => idx !== i));
   }
 
   return (
@@ -137,23 +150,27 @@ export function MultiUploader({
       <div className="flex flex-wrap gap-2">
         {value.map((url, i) => (
           <div key={i} className="relative">
-            <img src={url} alt="" className="h-20 w-20 rounded object-cover border" />
-            <button
-              type="button"
-              onClick={() => removeAt(i)}
-              className="absolute -top-1 -right-1 rounded-full bg-destructive p-0.5 text-destructive-foreground"
-            >
-              <X className="h-3 w-3" />
-            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={url}
+              alt=""
+              className="h-20 w-20 rounded-lg border border-border object-cover"
+            />
+            <RemoveButton onClick={() => onChange(value.filter((_, idx) => idx !== i))} />
           </div>
         ))}
         <button
           type="button"
           onClick={() => input.current?.click()}
           disabled={loading}
-          className="h-20 w-20 rounded border border-dashed flex items-center justify-center text-xs text-muted-foreground hover:bg-muted/30"
+          aria-label="Agregar imágenes"
+          className="grid h-20 w-20 place-items-center rounded-lg border border-dashed border-border text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-55"
         >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+          <HugeiconsIcon
+            icon={loading ? Loading03Icon : Upload01Icon}
+            size={18}
+            className={loading ? 'animate-spin' : undefined}
+          />
         </button>
       </div>
       <input
