@@ -104,6 +104,26 @@ export const resources = mysqlTable('resources', {
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
 });
 
+// Registry propio estilo shadcn: cada fila es un registry-item instalable.
+export const components = mysqlTable('components', {
+  id: int('id').autoincrement().primaryKey(),
+  name: varchar('name', { length: 160 }).notNull().unique(),
+  title: varchar('title', { length: 200 }).notNull(),
+  description: varchar('description', { length: 500 }),
+  type: varchar('type', { length: 60 }).default('registry:component').notNull(),
+  dependencies: json('dependencies').$type<string[]>().default([]),
+  registryDependencies: json('registry_dependencies').$type<string[]>().default([]),
+  files: json('files')
+    .$type<{ path: string; content: string; type: string }[]>()
+    .default([]),
+  tags: json('tags').$type<string[]>().default([]),
+  preview: varchar('preview', { length: 1000 }),
+  isPublished: boolean('is_published').default(true).notNull(),
+  order: int('order').default(0).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Experience = typeof experiences.$inferSelect;
@@ -111,3 +131,4 @@ export type Skill = typeof skills.$inferSelect;
 export type ContactMessage = typeof contactMessages.$inferSelect;
 export type ResourceCategory = typeof resourceCategories.$inferSelect;
 export type Resource = typeof resources.$inferSelect;
+export type Component = typeof components.$inferSelect;

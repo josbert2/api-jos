@@ -87,3 +87,26 @@ export interface Resource {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface RegistryFile {
+  path: string;
+  content: string;
+  type: string;
+}
+
+export interface Component {
+  id: number;
+  name: string;
+  title: string;
+  description: string | null;
+  type: string;
+  dependencies: string[];
+  registryDependencies: string[];
+  files: RegistryFile[];
+  tags: string[];
+  preview: string | null;
+  isPublished: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -8,6 +8,7 @@ import { SkillsModule } from './skills/skills.module';
 import { ContactModule } from './contact/contact.module';
 import { UploadModule } from './upload/upload.module';
 import { ResourcesModule } from './resources/resources.module';
+import { ComponentsModule } from './components/components.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ResourcesModule } from './resources/resources.module';
     ContactModule,
     UploadModule,
     ResourcesModule,
+    ComponentsModule,
   ],
 })
 export class AppModule {}
