@@ -28,7 +28,7 @@ CREATE TABLE `__drizzle_migrations` (
   `created_at` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,8 +37,45 @@ CREATE TABLE `__drizzle_migrations` (
 
 LOCK TABLES `__drizzle_migrations` WRITE;
 /*!40000 ALTER TABLE `__drizzle_migrations` DISABLE KEYS */;
-INSERT INTO `__drizzle_migrations` VALUES (1,'8a1628f5abab050d6575f9da48459601cc41bb3f0e6d5e604204576f70b86b85',1776781809612),(2,'88c8cd1463802c3e49b4c8e9554b1d2be8d6ca9e1e87e35d86337be2781aa745',1778984346172);
+INSERT INTO `__drizzle_migrations` VALUES (1,'8a1628f5abab050d6575f9da48459601cc41bb3f0e6d5e604204576f70b86b85',1776781809612),(2,'88c8cd1463802c3e49b4c8e9554b1d2be8d6ca9e1e87e35d86337be2781aa745',1778984346172),(3,'45a82ae6ffc2adfbb8fcd751c67a4b5e254835004a7dc229bb4dd8cf5651713d',1779023215764);
 /*!40000 ALTER TABLE `__drizzle_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `components`
+--
+
+DROP TABLE IF EXISTS `components`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `components` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(160) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `type` varchar(60) NOT NULL DEFAULT 'registry:component',
+  `dependencies` json DEFAULT (_utf8mb4'[]'),
+  `registry_dependencies` json DEFAULT (_utf8mb4'[]'),
+  `files` json DEFAULT (_utf8mb4'[]'),
+  `tags` json DEFAULT (_utf8mb4'[]'),
+  `preview` varchar(1000) DEFAULT NULL,
+  `is_published` tinyint(1) NOT NULL DEFAULT '1',
+  `order` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT (now()),
+  `updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `components_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `components`
+--
+
+LOCK TABLES `components` WRITE;
+/*!40000 ALTER TABLE `components` DISABLE KEYS */;
+INSERT INTO `components` VALUES (1,'tube-cursor','Tube Cursor','A tube-cursor component.','registry:component','[]','[]','[{\"path\": \"src/components/ui/tube-cursor.tsx\", \"type\": \"registry:component\", \"content\": \"// components/TubesCursor.tsx\\n\\\"use client\\\";\\n\\nimport { useEffect, useRef } from \\\"react\\\";\\n\\ntype TubesCursorProps = {\\n  title?: string;\\n  subtitle?: string;\\n  caption?: string;\\n  initialColors?: string[];   // tubes base colors\\n  lightColors?: string[];     // lights colors\\n  lightIntensity?: number;    // lights intensity\\n  titleSize?: string;         // Tailwind text size classes\\n  subtitleSize?: string;\\n  captionSize?: string;\\n  enableRandomizeOnClick?: boolean;\\n  className?: string;         // extra classes for wrapper\\n};\\n\\nconst TubesCursor = ({\\n  title = \\\"Tubes\\\",\\n  subtitle = \\\"Cursor\\\",\\n  caption = \\\"WebGPU / WebGL\\\",\\n  initialColors = [\\\"#f967fb\\\", \\\"#53bc28\\\", \\\"#6958d5\\\"],\\n  lightColors = [\\\"#83f36e\\\", \\\"#fe8a2e\\\", \\\"#ff008a\\\", \\\"#60aed5\\\"],\\n  lightIntensity = 200,\\n  titleSize = \\\"text-[80px]\\\",\\n  subtitleSize = \\\"text-[60px]\\\",\\n  captionSize = \\\"text-base\\\",\\n  enableRandomizeOnClick = true,\\n  className = \\\"\\\",\\n}: TubesCursorProps) => {\\n  const canvasRef = useRef<HTMLCanvasElement | null>(null);\\n  const appRef = useRef<any>(null);\\n\\n  useEffect(() => {\\n    let removeClick: (() => void) | null = null;\\n    let destroyed = false;\\n\\n    (async () => {\\n      const mod = await import(\\n        /* webpackIgnore: true */\\n        \\\"https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js\\\"\\n      );\\n      const TubesCursorCtor = (mod as any).default ?? mod;\\n\\n      if (!canvasRef.current || destroyed) return;\\n\\n      const app = TubesCursorCtor(canvasRef.current, {\\n        tubes: {\\n          colors: initialColors,\\n          lights: {\\n            intensity: lightIntensity,\\n            colors: lightColors,\\n          },\\n        },\\n      });\\n\\n      appRef.current = app;\\n\\n      if (enableRandomizeOnClick) {\\n        const handler = () => {\\n          const colors = randomColors(initialColors.length);\\n          const lights = randomColors(lightColors.length);\\n          app.tubes.setColors(colors);\\n          app.tubes.setLightsColors(lights);\\n        };\\n        document.body.addEventListener(\\\"click\\\", handler);\\n        removeClick = () =>\\n          document.body.removeEventListener(\\\"click\\\", handler);\\n      }\\n    })();\\n\\n    return () => {\\n      destroyed = true;\\n      if (removeClick) removeClick();\\n      try {\\n        appRef.current?.dispose?.();\\n        appRef.current = null;\\n      } catch {\\n        // ignore\\n      }\\n    };\\n  }, [initialColors, lightColors, lightIntensity, enableRandomizeOnClick]);\\n\\n  return (\\n    <div className={`relative h-screen w-screen overflow-hidden ${className}`}>\\n      {/* Background canvas */}\\n      <canvas ref={canvasRef} className=\\\"fixed inset-0 block h-full w-full\\\" />\\n\\n      {/* Hero text */}\\n      <div className=\\\"relative z-10 flex h-full w-full flex-col items-center justify-center gap-2 select-none\\\">\\n        <h1\\n          className={`m-0 p-0 text-white font-bold uppercase leading-none drop-shadow-[0_0_20px_rgba(0,0,0,1)] ${titleSize}`}\\n        >\\n          {title}\\n        </h1>\\n        <h2\\n          className={`m-0 p-0 text-white font-medium uppercase leading-none drop-shadow-[0_0_20px_rgba(0,0,0,1)] ${subtitleSize}`}\\n        >\\n          {subtitle}\\n        </h2>\\n        <p\\n          className={`m-0 p-0 text-white leading-none drop-shadow-[0_0_20px_rgba(0,0,0,1)] ${captionSize}`}\\n        >\\n          {caption}\\n        </p>\\n      </div>\\n    </div>\\n  );\\n};\\n\\nfunction randomColors(count: number) {\\n  return new Array(count).fill(0).map(\\n    () =>\\n      \\\"#\\\" +\\n      Math.floor(Math.random() * 16777215)\\n        .toString(16)\\n        .padStart(6, \\\"0\\\")\\n  );\\n}\\n\\nexport { TubesCursor };\\n\"}]','[\"cursor\", \"webgl\"]',NULL,1,0,'2026-05-17 13:09:43','2026-05-17 13:09:43');
+/*!40000 ALTER TABLE `components` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -205,7 +242,7 @@ CREATE TABLE `resources` (
 
 LOCK TABLES `resources` WRITE;
 /*!40000 ALTER TABLE `resources` DISABLE KEYS */;
-INSERT INTO `resources` VALUES (1,'https://21st.dev/','21st.dev',NULL,NULL,NULL,'[]',1,NULL,1,0,'2026-05-17 02:29:43','2026-05-17 02:29:43'),(2,'https://linear.app/','Linear – The system for product development','Purpose-built for planning and building products with AI agents.','https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/resources/1778984985102-6d446b36-shot.png','https://linear.app/static/apple-touch-icon.png?v=2','[]',2,NULL,1,0,'2026-05-17 02:29:45','2026-05-17 02:29:45'),(3,'https://vercel.com/','Vercel: Build and deploy the best web experiences with the AI Cloud – Vercel','Vercel gives developers the frameworks, workflows, and infrastructure to build a faster, more personalized web.','https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/resources/1778984986690-3a7cc0cf-shot.png','https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-256x256.png','[]',2,NULL,0,0,'2026-05-17 02:29:47','2026-05-17 02:29:47');
+INSERT INTO `resources` VALUES (1,'https://21st.dev/','21st.dev',NULL,NULL,NULL,'[]',1,NULL,1,0,'2026-05-17 02:29:43','2026-05-17 02:29:43'),(2,'https://linear.app/','Linear – The system for product development','Purpose-built for planning and building products with AI agents.','https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/resources/1778984985102-6d446b36-shot.png','https://linear.app/static/apple-touch-icon.png?v=2','[]',2,NULL,1,0,'2026-05-17 02:29:45','2026-05-17 02:52:32'),(3,'https://vercel.com/','Vercel: Build and deploy the best web experiences with the AI Cloud – Vercel','Vercel gives developers the frameworks, workflows, and infrastructure to build a faster, more personalized web.','https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/resources/1778984986690-3a7cc0cf-shot.png','https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-256x256.png','[]',2,NULL,0,0,'2026-05-17 02:29:47','2026-05-17 02:29:47');
 /*!40000 ALTER TABLE `resources` ENABLE KEYS */;
 UNLOCK TABLES;
 
