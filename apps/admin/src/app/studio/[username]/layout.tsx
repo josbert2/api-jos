@@ -6,6 +6,7 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   ComputerTerminal01Icon,
+  GridViewIcon,
   Logout01Icon,
   UserIcon,
 } from '@hugeicons/core-free-icons';
@@ -74,6 +75,17 @@ function AvatarMenu({ user, onLogout }: { user: AuthUser; onLogout: () => void }
             <HugeiconsIcon icon={UserIcon} size={16} />
             Perfil público
           </Link>
+          {user.role === 'admin' && (
+            <Link
+              href="/projects"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+            >
+              <HugeiconsIcon icon={GridViewIcon} size={16} />
+              Panel admin
+            </Link>
+          )}
           <button
             type="button"
             role="menuitem"

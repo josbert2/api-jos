@@ -46,7 +46,7 @@ export default function LoginPage() {
         password,
       });
       setToken(res.token);
-      router.push(`/studio/${res.user.username}`);
+      router.push(res.user.role === 'admin' ? '/projects' : `/studio/${res.user.username}`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : '';
       setError(

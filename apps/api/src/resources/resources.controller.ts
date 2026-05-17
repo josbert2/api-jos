@@ -18,8 +18,9 @@ import {
   UpdateResourceDto,
 } from './resources.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AdminGuard)
 @Controller('resources')
 export class ResourcesController {
   constructor(private readonly service: ResourcesService) {}

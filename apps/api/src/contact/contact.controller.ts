@@ -12,6 +12,7 @@ import {
 import { ContactService } from './contact.service';
 import { CreateContactDto, UpdateContactStatusDto } from './contact.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('contact')
 export class ContactController {
@@ -24,19 +25,19 @@ export class ContactController {
   }
 
   // Admin
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Get()
   list() {
     return this.service.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Get(':id')
   byId(@Param('id', ParseIntPipe) id: number) {
     return this.service.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Patch(':id/status')
   setStatus(
     @Param('id', ParseIntPipe) id: number,
@@ -45,7 +46,7 @@ export class ContactController {
     return this.service.updateStatus(id, dto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id);

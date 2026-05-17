@@ -29,6 +29,7 @@ function publicUser(user: typeof users.$inferSelect) {
     name: user.name,
     avatar: user.avatar,
     bio: user.bio,
+    role: user.role,
   };
 }
 

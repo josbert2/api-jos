@@ -13,7 +13,7 @@ export default function Index() {
       return;
     }
     apiGet<AuthUser>('/auth/me')
-      .then((u) => router.replace(`/studio/${u.username}`))
+      .then((u) => router.replace(u.role === 'admin' ? '/projects' : `/studio/${u.username}`))
       .catch(() => {
         clearToken();
         router.replace('/login');

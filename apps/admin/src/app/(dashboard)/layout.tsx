@@ -16,7 +16,8 @@ import {
   SourceCodeIcon,
   SparklesIcon,
 } from '@hugeicons/core-free-icons';
-import { clearToken, getToken } from '@/lib/api';
+import { apiGet, clearToken, getToken } from '@/lib/api';
+import { AuthUser } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 const nav = [
@@ -56,8 +57,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!getToken()) router.replace('/login');
-    else setReady(true);
+    if (!getToken()) {
+      router.replace('/login');
+      return;
+    }
+    // El CMS de portfolio es solo del admin; un usuario normal va a su Studio.
+    apiGet<AuthUser>('/auth/me')
+      .then((me) => {
+        if (me.role === 'admin') setReady(true);
+        else router.replace(`/studio/${me.username}`);
+      })
+      .catch(() => {
+        clearToken();
+        router.replace('/login');
+      });
   }, [router]);
 
   useEffect(() => {

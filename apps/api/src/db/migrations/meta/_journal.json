@@ -43,6 +43,13 @@
       "when": 1779028027521,
       "tag": "0005_flowery_prodigy",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1779032510658,
+      "tag": "0006_young_molten_man",
+      "breakpoints": true
     }
   ]
 }

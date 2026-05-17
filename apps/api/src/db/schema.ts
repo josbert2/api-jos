@@ -18,6 +18,7 @@ export const users = mysqlTable('users', {
   name: varchar('name', { length: 120 }),
   avatar: varchar('avatar', { length: 500 }),
   bio: varchar('bio', { length: 500 }),
+  role: mysqlEnum('role', ['admin', 'user']).default('user').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
 });
