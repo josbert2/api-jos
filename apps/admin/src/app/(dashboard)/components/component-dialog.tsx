@@ -46,6 +46,7 @@ export function ComponentDialog({
   const [dependencies, setDependencies] = useState<string[]>([]);
   const [registryDependencies, setRegistryDependencies] = useState<string[]>([]);
   const [files, setFiles] = useState<FileDraft[]>([{ path: '', content: '' }]);
+  const [demo, setDemo] = useState('');
   const [isPublished, setIsPublished] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +65,7 @@ export function ComponentDialog({
         ? component.files.map((f) => ({ path: f.path, content: f.content }))
         : [{ path: '', content: '' }],
     );
+    setDemo(component?.demo ?? '');
     setIsPublished(component?.isPublished ?? true);
     setError(null);
   }, [open, component]);
@@ -87,6 +89,7 @@ export function ComponentDialog({
         dependencies,
         registryDependencies,
         files: cleanFiles.map((f) => ({ path: f.path.trim(), content: f.content, type })),
+        demo: demo.trim() || undefined,
         isPublished,
       };
       if (component) await apiPatch(`/components/${component.id}`, body);
@@ -209,6 +212,20 @@ export function ComponentDialog({
                 Agregar archivo
               </Button>
             </div>
+
+            <Field
+              label="Demo (código del preview)"
+              hint="Componente que usa este registry-item. Se ve en el preview vivo, no se instala."
+            >
+              <Textarea
+                value={demo}
+                onChange={(e) => setDemo(e.target.value)}
+                placeholder={'export default function Demo() {\n  return <MiComponente />;\n}'}
+                rows={6}
+                className="font-mono text-xs"
+                spellCheck={false}
+              />
+            </Field>
 
             <Checkbox
               label="Publicado (visible en el registry)"

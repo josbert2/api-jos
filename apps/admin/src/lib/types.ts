@@ -104,6 +104,7 @@ export interface Component {
   dependencies: string[];
   registryDependencies: string[];
   files: RegistryFile[];
+  demo: string | null;
   tags: string[];
   preview: string | null;
   isPublished: boolean;

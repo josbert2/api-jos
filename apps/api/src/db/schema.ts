@@ -117,6 +117,7 @@ export const components = mysqlTable('components', {
   files: json('files')
     .$type<{ path: string; content: string; type: string }[]>()
     .default([]),
+  demo: text('demo'),
   tags: json('tags').$type<string[]>().default([]),
   preview: varchar('preview', { length: 1000 }),
   isPublished: boolean('is_published').default(true).notNull(),

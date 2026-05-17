@@ -15,6 +15,7 @@ export class CreateComponentDto {
   @IsOptional() @IsArray() dependencies?: string[];
   @IsOptional() @IsArray() registryDependencies?: string[];
   @IsArray() files!: RegistryFileDto[];
+  @IsOptional() @IsString() demo?: string;
   @IsOptional() @IsArray() tags?: string[];
   @IsOptional() @IsString() @MaxLength(1000) preview?: string;
   @IsOptional() @IsBoolean() isPublished?: boolean;

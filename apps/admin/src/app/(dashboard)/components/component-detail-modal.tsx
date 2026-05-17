@@ -10,10 +10,24 @@ import {
   PencilEdit02Icon,
   Tick02Icon,
 } from '@hugeicons/core-free-icons';
+import dynamic from 'next/dynamic';
 import { Component } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+
+// Sandpack es pesado: se carga solo cuando se abre el modal de detalle.
+const SandpackPreviewPane = dynamic(
+  () => import('./sandpack-preview').then((m) => m.SandpackPreviewPane),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="grid h-[400px] place-items-center bg-muted text-sm text-muted-foreground">
+        Cargando preview…
+      </div>
+    ),
+  },
+);
 
 const REGISTRY_BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001') + '/r';
 
@@ -87,6 +101,20 @@ export function ComponentDetailModal({
             </div>
             {c.description && (
               <p className="mt-2 text-sm text-muted-foreground">{c.description}</p>
+            )}
+
+            {/* Preview vivo (Sandpack) */}
+            <p className="mb-1.5 mt-4 text-[0.7rem] font-medium uppercase tracking-[0.09em] text-muted-foreground">
+              Preview
+            </p>
+            {c.demo ? (
+              <div className="overflow-hidden rounded-lg border border-border">
+                <SandpackPreviewPane component={c} />
+              </div>
+            ) : (
+              <div className="grid h-40 place-items-center rounded-lg border border-dashed border-border px-4 text-center text-sm text-muted-foreground">
+                Agregá un demo (editá el componente) para ver el preview vivo.
+              </div>
             )}
 
             {/* Comando de instalación */}
