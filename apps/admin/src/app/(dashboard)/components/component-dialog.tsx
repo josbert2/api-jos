@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Field, Checkbox } from '@/components/ui/field';
 import { TagInput } from '@/components/ui/tag-input';
+import { SingleUploader } from '@/components/Uploader';
 
 const TYPES = [
   'registry:component',
@@ -47,6 +48,7 @@ export function ComponentDialog({
   const [registryDependencies, setRegistryDependencies] = useState<string[]>([]);
   const [files, setFiles] = useState<FileDraft[]>([{ path: '', content: '' }]);
   const [demo, setDemo] = useState('');
+  const [preview, setPreview] = useState('');
   const [isPublished, setIsPublished] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +68,7 @@ export function ComponentDialog({
         : [{ path: '', content: '' }],
     );
     setDemo(component?.demo ?? '');
+    setPreview(component?.preview ?? '');
     setIsPublished(component?.isPublished ?? true);
     setError(null);
   }, [open, component]);
@@ -90,6 +93,7 @@ export function ComponentDialog({
         registryDependencies,
         files: cleanFiles.map((f) => ({ path: f.path.trim(), content: f.content, type })),
         demo: demo.trim() || undefined,
+        preview: preview || undefined,
         isPublished,
       };
       if (component) await apiPatch(`/components/${component.id}`, body);
@@ -226,6 +230,17 @@ export function ComponentDialog({
                 spellCheck={false}
               />
             </Field>
+
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[0.7rem] font-medium uppercase tracking-[0.09em] text-muted-foreground">
+                Imagen de preview
+              </span>
+              <SingleUploader
+                value={preview}
+                onChange={setPreview}
+                folder={`components/${name || 'nuevo'}`}
+              />
+            </div>
 
             <Checkbox
               label="Publicado (visible en el registry)"

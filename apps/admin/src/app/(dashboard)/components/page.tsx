@@ -160,12 +160,32 @@ export default function ComponentsPage() {
               {visible.map((c) => (
                 <div
                   key={c.id}
-                  className="group relative flex flex-col rounded-xl border border-border bg-card transition-colors hover:border-foreground/20"
+                  className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-foreground/20"
                 >
                   <button
                     type="button"
                     onClick={() => setViewingId(c.id)}
-                    className="flex-1 rounded-t-xl p-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                    aria-label={`Ver ${c.title}`}
+                    className="block aspect-[16/10] w-full overflow-hidden bg-muted outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                  >
+                    {c.preview ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={c.preview}
+                        alt=""
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <div className="grid h-full place-items-center text-muted-foreground">
+                        <HugeiconsIcon icon={PackageIcon} size={26} />
+                      </div>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewingId(c.id)}
+                    className="flex-1 p-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="line-clamp-1 text-sm font-medium text-foreground">
