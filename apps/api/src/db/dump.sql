@@ -28,7 +28,7 @@ CREATE TABLE `__drizzle_migrations` (
   `created_at` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `__drizzle_migrations` (
 
 LOCK TABLES `__drizzle_migrations` WRITE;
 /*!40000 ALTER TABLE `__drizzle_migrations` DISABLE KEYS */;
-INSERT INTO `__drizzle_migrations` VALUES (1,'8a1628f5abab050d6575f9da48459601cc41bb3f0e6d5e604204576f70b86b85',1776781809612);
+INSERT INTO `__drizzle_migrations` VALUES (1,'8a1628f5abab050d6575f9da48459601cc41bb3f0e6d5e604204576f70b86b85',1776781809612),(2,'88c8cd1463802c3e49b4c8e9554b1d2be8d6ca9e1e87e35d86337be2781aa745',1778984346172);
 /*!40000 ALTER TABLE `__drizzle_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,6 +143,70 @@ LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
 INSERT INTO `projects` VALUES (21,'Butacas','butacas','Navigate the world of web technology',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/butacas/1778983199985-f4adebf0-cover.png','[]','[\"Web App\"]','[]','https://josbert2.github.io/teas/',NULL,NULL,NULL,1,1,1,'2026-05-17 02:00:00','2026-05-17 02:00:00'),(22,'Stylo','stylo','Editor de código en vivo con preview en tiempo real',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/stylo/1778983200749-39af2fc5-cover.png','[]','[\"Web App\"]','[]',NULL,NULL,NULL,NULL,2,1,1,'2026-05-17 02:00:01','2026-05-17 02:00:01'),(23,'Entrekids','entrekids','Marketplace para actividades infantiles',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/entrekids/1778983201295-ff0b06dd-cover.webp','[]','[\"Web App\"]','[]',NULL,NULL,NULL,NULL,3,0,1,'2026-05-17 02:00:01','2026-05-17 02:00:01'),(24,'Bookforce','bookforce','Software para tu negocio de entretenimiento',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/bookforce/1778983201834-24486448-cover.webp','[]','[\"Web App\"]','[]','https://www.bookforce.io/',NULL,NULL,NULL,4,0,1,'2026-05-17 02:00:02','2026-05-17 02:00:02'),(25,'Criptovision','criptovision','End-to-end Blockchain Services',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/criptovision/1778983202348-c288af54-cover.webp','[]','[\"Web 3 App\"]','[]','https://criptovision.com/',NULL,NULL,NULL,5,0,1,'2026-05-17 02:00:03','2026-05-17 02:00:03'),(26,'MILL','mill','Con el propósito de dar respuesta a las necesidades y demandas de la Industria Metalúrgica y Metalmecánica.',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/mill/1778983203069-95bbb888-cover.webp','[]','[\"Landing Page\"]','[]','https://josbert2.github.io/Mill/','https://github.com/josbert2/Mill',NULL,NULL,6,0,1,'2026-05-17 02:00:03','2026-05-17 02:00:03'),(27,'Template App','template-app','Landing pages para app de productos',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/template-app/1778983203581-c743bb99-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/product/','https://github.com/josbert2/product',NULL,NULL,7,0,1,'2026-05-17 02:00:04','2026-05-17 02:00:04'),(28,'Solo Llantas','solo-llantas','Landing page para un sitio de venta de llantas',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/solo-llantas/1778983204086-d95c5fc7-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/llanta/shop.html','https://github.com/josbert2/llanta',NULL,NULL,8,0,1,'2026-05-17 02:00:04','2026-05-17 02:00:04'),(29,'Motoo Apartaments','motoo-apartaments','Landing page para apartamentos, hoteles y casas',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/motoo-apartaments/1778983204676-6afb9aea-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/edificio/','https://github.com/josbert2/edificio',NULL,NULL,9,0,1,'2026-05-17 02:00:05','2026-05-17 02:00:05'),(30,'Piazza','piazza','We would like to welcome you to Little Piazza Bar & Grill',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/piazza/1778983205180-303094ac-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/piazza/','https://github.com/josbert2/piazza',NULL,NULL,10,0,1,'2026-05-17 02:00:05','2026-05-17 02:00:05'),(31,'Babarrun','babarrun','Landing page de panoramas',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/babarrun/1778983205739-efd2fca1-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/babarrun/','https://github.com/josbert2/babarrun',NULL,NULL,11,0,1,'2026-05-17 02:00:06','2026-05-17 02:00:06'),(32,'PAAGSA','paagsa','PAAGSA, una empresa 100% mexicana con más de 100 años en la industria de las Artes Gráficas.',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/paagsa/1778983206283-44a95d71-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/mascarillas/','https://github.com/josbert2/mascarillas',NULL,NULL,12,0,1,'2026-05-17 02:00:06','2026-05-17 02:00:06'),(33,'VIRUS','virus','Virus que ya se han ido y virus que llegarán.',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/virus/1778983206801-5ab08020-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/virus/','https://github.com/josbert2/virus',NULL,NULL,13,0,1,'2026-05-17 02:00:07','2026-05-17 02:00:07'),(34,'Pixie','pixie','Landing page para un ecommerce de productos para mascotas',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/pixie/1778983207328-69d82c44-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/pet/','https://github.com/josbert2/pet',NULL,NULL,14,0,1,'2026-05-17 02:00:07','2026-05-17 02:00:07'),(35,'UOH','uoh','Landing page para la Universidad UOH',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/uoh/1778983207836-7d610e82-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/uoh/','https://github.com/josbert2/uoh',NULL,NULL,15,0,1,'2026-05-17 02:00:08','2026-05-17 02:00:08'),(36,'Rest 911','rest-911','Navigate the world of web technology',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/rest-911/1778983208344-c78f5082-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/res-workana/',NULL,NULL,NULL,16,0,1,'2026-05-17 02:00:11','2026-05-17 02:00:11'),(37,'Davivienda','davivienda','Landing page para el banco Davivienda',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/davivienda/1778983211625-e0ce9ff2-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/repowork/',NULL,NULL,NULL,17,0,1,'2026-05-17 02:00:12','2026-05-17 02:00:12'),(38,'Savefood','savefood','Iniciativa para reducir el excedente de alimentos generado por los restaurantes',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/savefood/1778983212126-544cab04-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/savefood/',NULL,NULL,NULL,18,0,1,'2026-05-17 02:00:12','2026-05-17 02:00:12'),(39,'Black Coffee','black-coffee','Navigate the world of web technology',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/black-coffee/1778983212980-f1b5ecd6-cover.webp','[]','[\"Web App\"]','[]','https://josbert2.github.io/teas/',NULL,NULL,NULL,19,0,1,'2026-05-17 02:00:13','2026-05-17 02:00:13'),(40,'ADAGIOS TEAS','adagios-teas','Natural Teas',NULL,NULL,'https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/projects/adagios-teas/1778983213495-60fde72f-cover.webp','[]','[\"Web App\"]','[]','https://adagio-zeta.vercel.app/','https://github.com/josbert2/adagio',NULL,NULL,20,0,1,'2026-05-17 02:00:14','2026-05-17 02:00:14');
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `resource_categories`
+--
+
+DROP TABLE IF EXISTS `resource_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `resource_categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(120) NOT NULL,
+  `slug` varchar(120) NOT NULL,
+  `color` varchar(32) DEFAULT NULL,
+  `order` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT (now()),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `resource_categories_slug_unique` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `resource_categories`
+--
+
+LOCK TABLES `resource_categories` WRITE;
+/*!40000 ALTER TABLE `resource_categories` DISABLE KEYS */;
+INSERT INTO `resource_categories` VALUES (1,'Componentes','componentes-92rl2','oklch(0.55 0.16 290)',0,'2026-05-17 02:29:31'),(2,'Landings','landings-1ldau','oklch(0.62 0.14 215)',1,'2026-05-17 02:29:31'),(3,'Herramientas','herramientas-43z4k','oklch(0.62 0.14 155)',2,'2026-05-17 02:29:31');
+/*!40000 ALTER TABLE `resource_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `resources`
+--
+
+DROP TABLE IF EXISTS `resources`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `resources` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `url` varchar(1000) NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `description` text,
+  `thumbnail` varchar(1000) DEFAULT NULL,
+  `favicon` varchar(1000) DEFAULT NULL,
+  `tags` json DEFAULT (_utf8mb4'[]'),
+  `category_id` int DEFAULT NULL,
+  `notes` text,
+  `is_favorite` tinyint(1) NOT NULL DEFAULT '0',
+  `order` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT (now()),
+  `updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `resources`
+--
+
+LOCK TABLES `resources` WRITE;
+/*!40000 ALTER TABLE `resources` DISABLE KEYS */;
+INSERT INTO `resources` VALUES (1,'https://21st.dev/','21st.dev',NULL,NULL,NULL,'[]',1,NULL,1,0,'2026-05-17 02:29:43','2026-05-17 02:29:43'),(2,'https://linear.app/','Linear – The system for product development','Purpose-built for planning and building products with AI agents.','https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/resources/1778984985102-6d446b36-shot.png','https://linear.app/static/apple-touch-icon.png?v=2','[]',2,NULL,1,0,'2026-05-17 02:29:45','2026-05-17 02:29:45'),(3,'https://vercel.com/','Vercel: Build and deploy the best web experiences with the AI Cloud – Vercel','Vercel gives developers the frameworks, workflows, and infrastructure to build a faster, more personalized web.','https://pub-9ff94ab4fd8b48b686a07b9d1d1c3019.r2.dev/resources/1778984986690-3a7cc0cf-shot.png','https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-256x256.png','[]',2,NULL,0,0,'2026-05-17 02:29:47','2026-05-17 02:29:47');
+/*!40000 ALTER TABLE `resources` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
