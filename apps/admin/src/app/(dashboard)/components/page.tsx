@@ -23,8 +23,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { ComponentDialog } from './component-dialog';
 import { ComponentDetailModal } from './component-detail-modal';
 
-const REGISTRY_BASE =
-  (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001') + '/api/r';
+const REGISTRY_BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001') + '/r';
 
 export default function ComponentsPage() {
   const [items, setItems] = useState<Component[]>([]);
@@ -65,7 +64,9 @@ export default function ComponentsPage() {
   const viewing = items.find((c) => c.id === viewingId) ?? null;
 
   function copyCmd(c: Component) {
-    navigator.clipboard?.writeText(`npx shadcn@latest add ${REGISTRY_BASE}/${c.name}`).then(() => {
+    navigator.clipboard
+      ?.writeText(`npx shadcn@latest add ${REGISTRY_BASE}/${c.author}/${c.name}`)
+      .then(() => {
       setCopiedId(c.id);
       setTimeout(() => setCopiedId((id) => (id === c.id ? null : id)), 1600);
     });

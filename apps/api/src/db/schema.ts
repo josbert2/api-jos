@@ -108,6 +108,7 @@ export const resources = mysqlTable('resources', {
 export const components = mysqlTable('components', {
   id: int('id').autoincrement().primaryKey(),
   name: varchar('name', { length: 160 }).notNull().unique(),
+  author: varchar('author', { length: 80 }).default('josbert').notNull(),
   title: varchar('title', { length: 200 }).notNull(),
   description: varchar('description', { length: 500 }),
   type: varchar('type', { length: 60 }).default('registry:component').notNull(),

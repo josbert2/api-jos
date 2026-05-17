@@ -97,6 +97,7 @@ export interface RegistryFile {
 export interface Component {
   id: number;
   name: string;
+  author: string;
   title: string;
   description: string | null;
   type: string;

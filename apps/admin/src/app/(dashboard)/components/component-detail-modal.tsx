@@ -15,12 +15,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
-const REGISTRY_BASE =
-  (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001') + '/api/r';
+const REGISTRY_BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001') + '/r';
 
 const toolBtn =
   'grid h-8 w-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors ' +
   'hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring';
+
+const basename = (p: string) => p.split('/').pop() || p;
 
 export function ComponentDetailModal({
   component,
@@ -34,14 +35,17 @@ export function ComponentDetailModal({
   onEdit: (c: Component) => void;
 }) {
   const [copied, setCopied] = useState(false);
+  const [activeFile, setActiveFile] = useState(0);
 
   useEffect(() => {
-    if (!open) setCopied(false);
+    if (open) setActiveFile(0);
+    else setCopied(false);
   }, [open]);
 
   if (!component) return null;
   const c = component;
-  const command = `npx shadcn@latest add ${REGISTRY_BASE}/${c.name}`;
+  const command = `npx shadcn@latest add ${REGISTRY_BASE}/${c.author}/${c.name}`;
+  const file = c.files[activeFile] ?? c.files[0];
 
   function copyCmd() {
     navigator.clipboard?.writeText(command).then(() => {
@@ -76,7 +80,7 @@ export function ComponentDetailModal({
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-2">
               <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
-                {c.name}
+                {c.author}/{c.name}
               </code>
               <Badge variant="accent">{c.type.replace('registry:', '')}</Badge>
               {!c.isPublished && <Badge variant="warning">Borrador</Badge>}
@@ -121,22 +125,35 @@ export function ComponentDetailModal({
               </div>
             )}
 
-            {/* Archivos */}
-            <p className="mb-1.5 mt-4 text-[0.7rem] font-medium uppercase tracking-[0.09em] text-muted-foreground">
-              {c.files.length === 1 ? 'Archivo' : `${c.files.length} archivos`}
-            </p>
-            <div className="space-y-3">
-              {c.files.map((f, i) => (
-                <div key={i} className="overflow-hidden rounded-lg border border-border">
-                  <div className="border-b border-border bg-muted/50 px-3 py-1.5 font-mono text-xs text-muted-foreground">
-                    {f.path}
-                  </div>
-                  <pre className="max-h-72 overflow-auto bg-card p-3 text-xs leading-relaxed">
-                    <code className="font-mono text-foreground">{f.content}</code>
-                  </pre>
+            {/* Archivos — tabs */}
+            {file && (
+              <div className="mt-4">
+                <div className="flex flex-wrap gap-0.5 border-b border-border">
+                  {c.files.map((f, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setActiveFile(i)}
+                      className={cn(
+                        '-mb-px border-b-2 px-3 py-1.5 font-mono text-xs outline-none transition-colors',
+                        'focus-visible:ring-2 focus-visible:ring-ring',
+                        i === activeFile
+                          ? 'border-foreground text-foreground'
+                          : 'border-transparent text-muted-foreground hover:text-foreground',
+                      )}
+                    >
+                      {basename(f.path)}
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
+                <p className="px-1 py-1.5 font-mono text-[0.7rem] text-muted-foreground/70">
+                  {file.path}
+                </p>
+                <pre className="max-h-80 overflow-auto rounded-lg border border-border bg-card p-3 text-xs leading-relaxed">
+                  <code className="font-mono text-foreground">{file.content}</code>
+                </pre>
+              </div>
+            )}
           </div>
         </Dialog.Content>
       </Dialog.Portal>

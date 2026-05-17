@@ -1,0 +1,1 @@
+ALTER TABLE `components` ADD `author` varchar(80) DEFAULT 'josbert' NOT NULL;

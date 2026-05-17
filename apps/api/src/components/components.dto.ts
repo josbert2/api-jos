@@ -8,6 +8,7 @@ export class RegistryFileDto {
 
 export class CreateComponentDto {
   @IsString() @MaxLength(160) name!: string;
+  @IsOptional() @IsString() @MaxLength(80) author?: string;
   @IsString() @MaxLength(200) title!: string;
   @IsOptional() @IsString() @MaxLength(500) description?: string;
   @IsOptional() @IsString() @MaxLength(60) type?: string;

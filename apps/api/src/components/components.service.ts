@@ -38,10 +38,12 @@ export class ComponentsService {
     return { ok: true };
   }
 
-  // registry-item JSON que consume `npx shadcn add`
-  async registryItem(name: string) {
+  // registry-item JSON que consume `npx shadcn add` — ruta /r/:author/:name
+  async registryItem(author: string, name: string) {
     const [row] = await this.db.select().from(components).where(eq(components.name, name));
-    if (!row || !row.isPublished) throw new NotFoundException('Registry item not found');
+    if (!row || !row.isPublished || row.author !== author) {
+      throw new NotFoundException('Registry item not found');
+    }
     return {
       $schema: 'https://ui.shadcn.com/schema/registry-item.json',
       name: row.name,

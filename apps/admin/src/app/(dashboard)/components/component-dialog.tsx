@@ -39,6 +39,7 @@ export function ComponentDialog({
   onSaved: () => void;
 }) {
   const [name, setName] = useState('');
+  const [author, setAuthor] = useState('josbert');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('registry:component');
@@ -52,6 +53,7 @@ export function ComponentDialog({
   useEffect(() => {
     if (!open) return;
     setName(component?.name ?? '');
+    setAuthor(component?.author ?? 'josbert');
     setTitle(component?.title ?? '');
     setDescription(component?.description ?? '');
     setType(component?.type ?? 'registry:component');
@@ -78,6 +80,7 @@ export function ComponentDialog({
       if (cleanFiles.length === 0) throw new Error('Agregá al menos un archivo con path y código.');
       const body = {
         name: name.trim(),
+        author: author.trim() || 'josbert',
         title: title.trim(),
         description: description.trim() || undefined,
         type,
@@ -114,7 +117,7 @@ export function ComponentDialog({
 
           <form onSubmit={onSubmit} className="mt-5 flex flex-col gap-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Name (slug del registry)">
+              <Field label="Name (slug)" hint="Va en la URL: /r/autor/name">
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -122,10 +125,18 @@ export function ComponentDialog({
                   required
                 />
               </Field>
-              <Field label="Título">
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
+              <Field label="Autor (usuario)">
+                <Input
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  placeholder="josbert"
+                />
               </Field>
             </div>
+
+            <Field label="Título">
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
+            </Field>
 
             <Field label="Descripción">
               <Input value={description} onChange={(e) => setDescription(e.target.value)} />
