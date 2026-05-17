@@ -13,6 +13,7 @@ import {
   Mail01Icon,
   Menu01Icon,
   SourceCodeIcon,
+  SparklesIcon,
 } from '@hugeicons/core-free-icons';
 import { clearToken, getToken } from '@/lib/api';
 import { cn } from '@/lib/utils';
@@ -22,6 +23,7 @@ const nav = [
   { href: '/experiences', label: 'Experiencia', icon: Briefcase01Icon },
   { href: '/skills', label: 'Skills', icon: SourceCodeIcon },
   { href: '/messages', label: 'Mensajes', icon: Mail01Icon },
+  { href: '/inspiration', label: 'Inspiración', icon: SparklesIcon },
 ];
 
 const focusRing =

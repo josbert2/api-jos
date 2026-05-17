@@ -78,8 +78,36 @@ export const contactMessages = mysqlTable('contact_messages', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+// Bovedas de inspiracion: categorias + recursos (landings, links, etc.)
+export const resourceCategories = mysqlTable('resource_categories', {
+  id: int('id').autoincrement().primaryKey(),
+  name: varchar('name', { length: 120 }).notNull(),
+  slug: varchar('slug', { length: 120 }).notNull().unique(),
+  color: varchar('color', { length: 32 }),
+  order: int('order').default(0).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export const resources = mysqlTable('resources', {
+  id: int('id').autoincrement().primaryKey(),
+  url: varchar('url', { length: 1000 }).notNull(),
+  title: varchar('title', { length: 300 }).notNull(),
+  description: text('description'),
+  thumbnail: varchar('thumbnail', { length: 1000 }),
+  favicon: varchar('favicon', { length: 1000 }),
+  tags: json('tags').$type<string[]>().default([]),
+  categoryId: int('category_id'),
+  notes: text('notes'),
+  isFavorite: boolean('is_favorite').default(false).notNull(),
+  order: int('order').default(0).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Experience = typeof experiences.$inferSelect;
 export type Skill = typeof skills.$inferSelect;
 export type ContactMessage = typeof contactMessages.$inferSelect;
+export type ResourceCategory = typeof resourceCategories.$inferSelect;
+export type Resource = typeof resources.$inferSelect;

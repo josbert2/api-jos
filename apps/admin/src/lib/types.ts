@@ -62,3 +62,28 @@ export interface AuthUser {
   email: string;
   name: string | null;
 }
+
+export interface ResourceCategory {
+  id: number;
+  name: string;
+  slug: string;
+  color: string | null;
+  order: number;
+  createdAt: string;
+}
+
+export interface Resource {
+  id: number;
+  url: string;
+  title: string;
+  description: string | null;
+  thumbnail: string | null;
+  favicon: string | null;
+  tags: string[];
+  categoryId: number | null;
+  notes: string | null;
+  isFavorite: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
