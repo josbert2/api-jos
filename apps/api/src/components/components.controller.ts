@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ComponentsService } from './components.service';
@@ -19,27 +20,31 @@ export class ComponentsController {
   constructor(private readonly service: ComponentsService) {}
 
   @Get()
-  list() {
-    return this.service.findAll();
+  list(@Req() req: any) {
+    return this.service.findAll(req.user.id);
   }
 
   @Get(':id')
-  byId(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOne(id);
+  byId(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
+    return this.service.findOwned(id, req.user.id);
   }
 
   @Post()
-  create(@Body() dto: CreateComponentDto) {
-    return this.service.create(dto);
+  create(@Body() dto: CreateComponentDto, @Req() req: any) {
+    return this.service.create(dto, req.user.id, req.user.username || 'josbert');
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateComponentDto) {
-    return this.service.update(id, dto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateComponentDto,
+    @Req() req: any,
+  ) {
+    return this.service.update(id, dto, req.user.id);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
+  remove(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
+    return this.service.remove(id, req.user.id);
   }
 }

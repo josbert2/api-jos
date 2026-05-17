@@ -40,7 +40,17 @@ export async function api<T = unknown>(path: string, opts: FetchOpts = {}): Prom
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || `Request failed: ${res.status}`);
+    // El backend (NestJS) responde { message, error, statusCode }; sacamos el message.
+    let message = text;
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed?.message) {
+        message = Array.isArray(parsed.message) ? parsed.message.join(', ') : parsed.message;
+      }
+    } catch {
+      /* el body no era JSON, dejamos el texto crudo */
+    }
+    throw new Error(message || `Request failed: ${res.status}`);
   }
 
   if (res.status === 204) return undefined as T;

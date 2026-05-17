@@ -13,8 +13,11 @@ import {
 export const users = mysqlTable('users', {
   id: int('id').autoincrement().primaryKey(),
   email: varchar('email', { length: 190 }).notNull().unique(),
+  username: varchar('username', { length: 80 }).notNull().default('').unique(),
   passwordHash: varchar('password_hash', { length: 255 }).notNull(),
   name: varchar('name', { length: 120 }),
+  avatar: varchar('avatar', { length: 500 }),
+  bio: varchar('bio', { length: 500 }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
 });
@@ -107,6 +110,7 @@ export const resources = mysqlTable('resources', {
 // Registry propio estilo shadcn: cada fila es un registry-item instalable.
 export const components = mysqlTable('components', {
   id: int('id').autoincrement().primaryKey(),
+  userId: int('user_id'),
   name: varchar('name', { length: 160 }).notNull().unique(),
   author: varchar('author', { length: 80 }).default('josbert').notNull(),
   title: varchar('title', { length: 200 }).notNull(),

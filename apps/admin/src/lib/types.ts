@@ -60,7 +60,10 @@ export interface ContactMessage {
 export interface AuthUser {
   id: number;
   email: string;
+  username: string;
   name: string | null;
+  avatar: string | null;
+  bio: string | null;
 }
 
 export interface ResourceCategory {

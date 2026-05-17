@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
@@ -15,7 +15,17 @@ import { apiPost, setToken } from '@/lib/api';
 import { AuthUser } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-// Login en tema light, consume los tokens de globals.css (ver DESIGN.md).
+// Mismo slugify que el backend (auth.service.ts) — solo para el preview de la URL.
+function slugifyUsername(raw: string) {
+  return raw
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+}
+
 const fieldClass = cn(
   'h-11 w-full rounded-lg border border-input bg-card px-3.5 text-sm text-foreground',
   'caret-ring outline-none transition-[border-color,box-shadow] duration-150',
@@ -28,37 +38,45 @@ const fieldClass = cn(
 const labelClass =
   'mb-2 block text-[0.7rem] font-medium uppercase tracking-[0.09em] text-muted-foreground';
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const slug = useMemo(() => slugifyUsername(username), [username]);
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    if (slug.length < 3) {
+      setError('El usuario debe tener al menos 3 caracteres válidos (letras o números).');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
-      const res = await apiPost<{ token: string; user: AuthUser }>('/auth/login', {
+      const res = await apiPost<{ token: string; user: AuthUser }>('/auth/register', {
+        name: name.trim() || undefined,
+        username,
         email,
         password,
       });
       setToken(res.token);
       router.push(`/studio/${res.user.username}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : '';
       setError(
-        msg === 'Unauthorized'
-          ? 'Email o contraseña incorrectos.'
-          : 'No se pudo iniciar sesión. Revisá la conexión e intentá de nuevo.',
+        err instanceof Error && err.message
+          ? err.message
+          : 'No se pudo crear la cuenta. Intentá de nuevo.',
       );
       setLoading(false);
     }
   }
 
-  // El error es de credenciales, no de un campo: se limpia apenas el usuario reescribe.
   const clearError = () => error && setError(null);
   const invalid = error ? true : undefined;
 
@@ -102,10 +120,55 @@ export default function LoginPage() {
         </div>
 
         <h1 className="mt-9 text-[1.4rem] font-semibold tracking-[-0.015em] text-foreground">
-          Iniciá sesión
+          Creá tu cuenta
         </h1>
+        <p className="mt-1.5 text-[0.8rem] text-muted-foreground">
+          Vas a tener tu propio Studio para publicar componentes.
+        </p>
 
         <form onSubmit={onSubmit} className="mt-7 flex flex-col gap-4">
+          <div>
+            <label htmlFor="name" className={labelClass}>
+              Nombre <span className="lowercase tracking-normal">(opcional)</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                clearError();
+              }}
+              className={fieldClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="username" className={labelClass}>
+              Usuario
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              required
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                clearError();
+              }}
+              aria-invalid={invalid}
+              aria-describedby={error ? 'signup-error' : 'username-hint'}
+              className={fieldClass}
+            />
+            <p id="username-hint" className="mt-1.5 font-mono text-[0.72rem] text-muted-foreground">
+              /studio/<span className="text-foreground">{slug || '…'}</span>
+            </p>
+          </div>
+
           <div>
             <label htmlFor="email" className={labelClass}>
               Email
@@ -115,7 +178,6 @@ export default function LoginPage() {
               name="email"
               type="email"
               autoComplete="email"
-              autoFocus
               required
               value={email}
               onChange={(e) => {
@@ -123,7 +185,7 @@ export default function LoginPage() {
                 clearError();
               }}
               aria-invalid={invalid}
-              aria-describedby={error ? 'login-error' : undefined}
+              aria-describedby={error ? 'signup-error' : undefined}
               className={fieldClass}
             />
           </div>
@@ -137,15 +199,16 @@ export default function LoginPage() {
                 id="password"
                 name="password"
                 type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
+                minLength={6}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   clearError();
                 }}
                 aria-invalid={invalid}
-                aria-describedby={error ? 'login-error' : undefined}
+                aria-describedby={error ? 'signup-error' : undefined}
                 className={cn(fieldClass, 'pr-11')}
               />
               <button
@@ -167,7 +230,7 @@ export default function LoginPage() {
 
           {error && (
             <p
-              id="login-error"
+              id="signup-error"
               role="alert"
               className={cn(
                 'flex items-center gap-2 rounded-lg px-3 py-2.5 text-[0.8rem]',
@@ -196,11 +259,11 @@ export default function LoginPage() {
             {loading ? (
               <>
                 <HugeiconsIcon icon={Loading03Icon} size={17} className="animate-spin" />
-                Entrando…
+                Creando…
               </>
             ) : (
               <>
-                Entrar
+                Crear cuenta
                 <HugeiconsIcon
                   icon={ArrowRight01Icon}
                   size={17}
@@ -213,16 +276,16 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-6 text-center text-[0.8rem] text-muted-foreground">
-          ¿No tenés cuenta?{' '}
+          ¿Ya tenés cuenta?{' '}
           <a
-            href="/signup"
+            href="/login"
             className={cn(
               'rounded-sm font-medium text-foreground underline-offset-4 hover:underline',
               'outline-none focus-visible:ring-2 focus-visible:ring-ring',
               'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
             )}
           >
-            Creá una
+            Iniciá sesión
           </a>
         </p>
       </div>

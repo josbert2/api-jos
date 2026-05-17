@@ -2,12 +2,22 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getToken } from '@/lib/api';
+import { apiGet, clearToken, getToken } from '@/lib/api';
+import { AuthUser } from '@/lib/types';
 
 export default function Index() {
   const router = useRouter();
   useEffect(() => {
-    router.replace(getToken() ? '/projects' : '/login');
+    if (!getToken()) {
+      router.replace('/login');
+      return;
+    }
+    apiGet<AuthUser>('/auth/me')
+      .then((u) => router.replace(`/studio/${u.username}`))
+      .catch(() => {
+        clearToken();
+        router.replace('/login');
+      });
   }, [router]);
   return null;
 }

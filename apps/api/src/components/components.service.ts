@@ -1,5 +1,5 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { asc, eq } from 'drizzle-orm';
+import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { and, asc, eq } from 'drizzle-orm';
 import { DRIZZLE, DrizzleDB } from '../db/drizzle.module';
 import { components } from '../db/schema';
 import { CreateComponentDto, UpdateComponentDto } from './components.dto';
@@ -8,10 +8,12 @@ import { CreateComponentDto, UpdateComponentDto } from './components.dto';
 export class ComponentsService {
   constructor(@Inject(DRIZZLE) private readonly db: DrizzleDB) {}
 
-  findAll() {
+  // Solo los componentes del usuario autenticado.
+  findAll(userId: number) {
     return this.db
       .select()
       .from(components)
+      .where(eq(components.userId, userId))
       .orderBy(asc(components.order), asc(components.id));
   }
 
@@ -21,20 +23,32 @@ export class ComponentsService {
     return row;
   }
 
-  async create(dto: CreateComponentDto) {
-    const [result] = await this.db.insert(components).values(dto);
+  // findOne + chequeo de propiedad.
+  async findOwned(id: number, userId: number) {
+    const row = await this.findOne(id);
+    if (row.userId !== userId) throw new ForbiddenException('No es tu componente');
+    return row;
+  }
+
+  async create(dto: CreateComponentDto, userId: number, author: string) {
+    const [result] = await this.db.insert(components).values({ ...dto, userId, author });
     return this.findOne(result.insertId);
   }
 
-  async update(id: number, dto: UpdateComponentDto) {
-    await this.findOne(id);
-    await this.db.update(components).set(dto).where(eq(components.id, id));
+  async update(id: number, dto: UpdateComponentDto, userId: number) {
+    await this.findOwned(id, userId);
+    // userId/author no se reasignan desde el body
+    const { author: _author, ...patch } = dto;
+    void _author;
+    await this.db.update(components).set(patch).where(eq(components.id, id));
     return this.findOne(id);
   }
 
-  async remove(id: number) {
-    await this.findOne(id);
-    await this.db.delete(components).where(eq(components.id, id));
+  async remove(id: number, userId: number) {
+    await this.findOwned(id, userId);
+    await this.db
+      .delete(components)
+      .where(and(eq(components.id, id), eq(components.userId, userId)));
     return { ok: true };
   }
 
