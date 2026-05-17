@@ -8,17 +8,28 @@ import {
   Cancel01Icon,
   Globe02Icon,
   Link01Icon,
+  Loading03Icon,
   PencilEdit02Icon,
+  RefreshIcon,
   StarIcon,
   Tick02Icon,
 } from '@hugeicons/core-free-icons';
+import { apiPatch, apiPost } from '@/lib/api';
 import { Resource, ResourceCategory } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+interface CaptureResult {
+  title: string;
+  description: string;
+  thumbnail: string;
+  favicon: string;
+}
+
 const toolBtn =
   'grid h-8 w-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors ' +
-  'hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring';
+  'hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring ' +
+  'disabled:opacity-50 disabled:pointer-events-none';
 
 export function ResourceDetailModal({
   resource,
@@ -27,6 +38,7 @@ export function ResourceDetailModal({
   onOpenChange,
   onEdit,
   onToggleFavorite,
+  onChanged,
 }: {
   resource: Resource | null;
   category?: ResourceCategory;
@@ -34,14 +46,18 @@ export function ResourceDetailModal({
   onOpenChange: (open: boolean) => void;
   onEdit: (r: Resource) => void;
   onToggleFavorite: (r: Resource) => void;
+  onChanged: () => void;
 }) {
   const [copied, setCopied] = useState(false);
   const [mode, setMode] = useState<'shot' | 'live'>('shot');
+  const [recapturing, setRecapturing] = useState(false);
+  const [iframeLoading, setIframeLoading] = useState(true);
 
   useEffect(() => {
     if (!open) {
       setCopied(false);
       setMode('shot');
+      setRecapturing(false);
     }
   }, [open]);
 
@@ -55,6 +71,20 @@ export function ResourceDetailModal({
     });
   }
 
+  async function recapture() {
+    setRecapturing(true);
+    try {
+      const cap = await apiPost<CaptureResult>('/resources/capture', { url: r.url });
+      await apiPatch(`/resources/${r.id}`, {
+        thumbnail: cap.thumbnail || undefined,
+        favicon: cap.favicon || undefined,
+      });
+      onChanged();
+    } finally {
+      setRecapturing(false);
+    }
+  }
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -64,7 +94,7 @@ export function ResourceDetailModal({
           className="fixed left-1/2 top-1/2 z-50 flex max-h-[88vh] w-[calc(100vw-2rem)] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl border border-border bg-card focus:outline-none"
         >
           {/* Toolbar */}
-          <div className="flex items-center gap-2 border-b border-border px-3 py-2.5">
+          <div className="flex items-center gap-1.5 border-b border-border px-3 py-2.5">
             {r.favicon ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img src={r.favicon} alt="" className="ml-1 h-4 w-4 shrink-0 rounded-sm" />
@@ -92,6 +122,19 @@ export function ResourceDetailModal({
                 className={r.isFavorite ? 'text-accent' : undefined}
               />
             </button>
+            <button
+              type="button"
+              onClick={recapture}
+              disabled={recapturing}
+              aria-label="Recapturar preview"
+              className={toolBtn}
+            >
+              <HugeiconsIcon
+                icon={recapturing ? Loading03Icon : RefreshIcon}
+                size={16}
+                className={recapturing ? 'animate-spin' : undefined}
+              />
+            </button>
             <button type="button" onClick={copy} aria-label="Copiar link" className={toolBtn}>
               <HugeiconsIcon
                 icon={copied ? Tick02Icon : Link01Icon}
@@ -99,12 +142,7 @@ export function ResourceDetailModal({
                 className={copied ? 'text-accent' : undefined}
               />
             </button>
-            <button
-              type="button"
-              onClick={() => onEdit(r)}
-              aria-label="Editar"
-              className={toolBtn}
-            >
+            <button type="button" onClick={() => onEdit(r)} aria-label="Editar" className={toolBtn}>
               <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
             </button>
             <Button asChild size="sm">
@@ -126,7 +164,10 @@ export function ResourceDetailModal({
                   <button
                     key={m}
                     type="button"
-                    onClick={() => setMode(m)}
+                    onClick={() => {
+                      setMode(m);
+                      if (m === 'live') setIframeLoading(true);
+                    }}
                     className={cn(
                       'rounded px-2.5 py-1 text-xs font-medium outline-none transition-colors',
                       'focus-visible:ring-2 focus-visible:ring-ring',
@@ -140,14 +181,27 @@ export function ResourceDetailModal({
                 ))}
               </div>
             </div>
-            <div className="aspect-[16/10] overflow-hidden rounded-lg border border-border bg-muted">
+
+            <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-border bg-muted">
               {mode === 'live' ? (
-                <iframe
-                  src={r.url}
-                  title={r.title}
-                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                  className="h-full w-full border-0"
-                />
+                <>
+                  <iframe
+                    src={r.url}
+                    title={r.title}
+                    onLoad={() => setIframeLoading(false)}
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    className="h-full w-full border-0"
+                  />
+                  {iframeLoading && (
+                    <div className="absolute inset-0 grid place-items-center bg-muted">
+                      <HugeiconsIcon
+                        icon={Loading03Icon}
+                        size={22}
+                        className="animate-spin text-muted-foreground"
+                      />
+                    </div>
+                  )}
+                </>
               ) : r.thumbnail ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img src={r.thumbnail} alt="" className="h-full w-full object-cover" />

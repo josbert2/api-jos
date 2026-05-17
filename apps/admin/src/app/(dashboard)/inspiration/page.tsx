@@ -407,6 +407,7 @@ export default function InspirationPage() {
           openEdit(r);
         }}
         onToggleFavorite={toggleFavorite}
+        onChanged={load}
       />
       <ResourceDialog
         open={dialogOpen}
