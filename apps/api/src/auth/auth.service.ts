@@ -2,13 +2,14 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { eq, or } from 'drizzle-orm';
+import { and, asc, eq, or } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import { DRIZZLE, DrizzleDB } from '../db/drizzle.module';
-import { users } from '../db/schema';
+import { components, users } from '../db/schema';
 
 // username -> slug ASCII kebab-case (lo que va en /studio/<username>)
 function slugifyUsername(raw: string) {
@@ -94,5 +95,23 @@ export class AuthService {
   async findById(id: number) {
     const [user] = await this.db.select().from(users).where(eq(users.id, id));
     return user ?? null;
+  }
+
+  // Perfil público de un creador: info básica + componentes publicados.
+  async publicProfile(username: string) {
+    const [user] = await this.db.select().from(users).where(eq(users.username, username));
+    if (!user) throw new NotFoundException(`Usuario "${username}" no encontrado`);
+    const comps = await this.db
+      .select()
+      .from(components)
+      .where(and(eq(components.userId, user.id), eq(components.isPublished, true)))
+      .orderBy(asc(components.order), asc(components.id));
+    return {
+      username: user.username,
+      name: user.name,
+      avatar: user.avatar,
+      bio: user.bio,
+      components: comps,
+    };
   }
 }

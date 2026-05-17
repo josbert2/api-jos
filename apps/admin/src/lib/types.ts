@@ -92,6 +92,14 @@ export interface Resource {
   updatedAt: string;
 }
 
+export interface PublicProfile {
+  username: string;
+  name: string | null;
+  avatar: string | null;
+  bio: string | null;
+  components: Component[];
+}
+
 export interface RegistryFile {
   path: string;
   content: string;
