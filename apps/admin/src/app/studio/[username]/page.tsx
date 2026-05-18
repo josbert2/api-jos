@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   AlertCircleIcon,
@@ -52,6 +53,7 @@ function fmtDate(iso: string) {
 
 export default function StudioComponentsPage() {
   const user = useStudioUser();
+  const router = useRouter();
   const [items, setItems] = useState<Component[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
@@ -126,8 +128,7 @@ export default function StudioComponentsPage() {
   }
 
   function openNew() {
-    setEditing(null);
-    setDialogOpen(true);
+    router.push(`/studio/${user.username}/new`);
   }
   function openEdit(c: Component) {
     setEditing(c);

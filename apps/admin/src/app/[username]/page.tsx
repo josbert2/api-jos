@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
@@ -15,10 +16,11 @@ import { cn } from '@/lib/utils';
 
 const REGISTRY_BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4001') + '/r';
 
-function ComponentCard({ c }: { c: Component }) {
+function ComponentCard({ c, username }: { c: Component; username: string }) {
   const [copied, setCopied] = useState(false);
 
-  function copyCmd() {
+  function copyCmd(e: React.MouseEvent) {
+    e.preventDefault();
     navigator.clipboard
       ?.writeText(`npx shadcn@latest add ${REGISTRY_BASE}/${c.author}/${c.name}`)
       .then(() => {
@@ -28,7 +30,10 @@ function ComponentCard({ c }: { c: Component }) {
   }
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-foreground/20">
+    <Link
+      href={`/${username}/${c.name}`}
+      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-foreground/20"
+    >
       <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
         {c.preview ? (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -71,7 +76,7 @@ function ComponentCard({ c }: { c: Component }) {
           {copied ? 'Copiado' : 'npx shadcn@latest add'}
         </button>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -175,7 +180,7 @@ export default function PublicProfilePage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {profile.components.map((c) => (
-              <ComponentCard key={c.id} c={c} />
+              <ComponentCard key={c.id} c={c} username={profile.username} />
             ))}
           </div>
         )}

@@ -1,0 +1,32 @@
+{
+  "name": "@josbert/ui",
+  "version": "0.1.0",
+  "description": "CLI para agregar componentes del registry josbert.dev",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "josbert": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/cli.js",
+    "dev": "nodemon --watch src --ext ts,json --exec \"npm run build && node dist/cli.js\"",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "ora": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.28",
+    "nodemon": "^3.1.0",
+    "shx": "^0.3.4",
+    "typescript": "^5.4.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

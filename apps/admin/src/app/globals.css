@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    /* Tokens light. Canales OKLCH (L C H): neutros tintados hue 264, acento cian hue 215. */
-    --background: 0.98 0.003 264;
-    --foreground: 0.21 0.012 264;
-    --card: 0.995 0.001 264;
-    --card-foreground: 0.21 0.012 264;
-    --muted: 0.96 0.004 264;
-    --muted-foreground: 0.5 0.014 264;
-    --border: 0.91 0.005 264;
-    --input: 0.91 0.005 264;
+    /* Tokens dark — neutros hue 264, acento cian hue 215 */
+    --background: 0.09 0.005 264;
+    --foreground: 0.94 0.005 264;
+    --card: 0.12 0.006 264;
+    --card-foreground: 0.94 0.005 264;
+    --muted: 0.16 0.007 264;
+    --muted-foreground: 0.52 0.012 264;
+    --border: 0.21 0.008 264;
+    --input: 0.21 0.008 264;
     --ring: 0.55 0.13 215;
-    --primary: 0.24 0.013 264;
-    --primary-foreground: 0.99 0 0;
+    --primary: 0.93 0.004 264;
+    --primary-foreground: 0.09 0.005 264;
     --accent: 0.55 0.13 215;
     --accent-foreground: 0.99 0 0;
     --success: 0.6 0.13 155;
     --success-foreground: 0.99 0 0;
     --warning: 0.72 0.15 78;
     --warning-foreground: 0.24 0.04 78;
-    --destructive: 0.55 0.19 25;
+    --destructive: 0.62 0.22 25;
     --destructive-foreground: 0.99 0 0;
     --radius: 0.5rem;
   }
@@ -34,4 +34,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+
+.sp-c-euXojQ{
+  background-color: #09090B;
 }
