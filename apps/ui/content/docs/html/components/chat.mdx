@@ -1,0 +1,32 @@
+---
+title: Chat
+description: Chat bubbles render conversational messages with avatars and metadata.
+---
+
+Chat displays a single message inside a conversation. Use `chat-receiver` for incoming messages and `chat-sender` for outgoing ones; the tail position flips automatically.
+
+<ChatClassesTable />
+
+## Default
+
+The base markup wraps a `chat-bubble` inside a `chat` container with the direction modifier.
+
+<HtmlPreview name="chat-default" />
+
+## With Avatar
+
+Add a `chat-avatar` next to the bubble. The grid layout aligns it with the message tail.
+
+<HtmlPreview name="chat-avatar" />
+
+## With Header and Footer
+
+Use `chat-header` and `chat-footer` for metadata such as the sender name, timestamp or delivery status.
+
+<HtmlPreview name="chat-header-footer" />
+
+## Colors
+
+The `chat-bubble` accepts any background color utility. Pair semantic backgrounds with their `*-content` foreground for readable text.
+
+<HtmlPreview name="chat-colors" />

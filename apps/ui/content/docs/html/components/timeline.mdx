@@ -1,0 +1,32 @@
+---
+title: Timeline
+description: Timelines visualize a sequence of events with markers and connectors.
+---
+
+Timelines render a sequence of events with markers, connectors and labels. Each `<li>` can contain `timeline-start`, `timeline-middle` (the marker) and `timeline-end` slots, plus `<hr>` elements to draw connectors.
+
+<TimelineClassesTable />
+
+## Default
+
+The default timeline is horizontal. Use `timeline-box` to render entries as labeled chips.
+
+<HtmlPreview name="timeline-default" />
+
+## Vertical
+
+Add `timeline-vertical` to stack entries top-to-bottom.
+
+<HtmlPreview name="timeline-vertical" />
+
+## Compact
+
+Use `timeline-compact` to collapse the start slot and let the end slot carry the content.
+
+<HtmlPreview name="timeline-compact" />
+
+## Snap Icon
+
+`timeline-snap-icon` aligns the marker to the top of each row, perfect for completed-step lists.
+
+<HtmlPreview name="timeline-snap-icon" />

@@ -1,0 +1,13 @@
+export default {
+  description: "Loading with semantic colors",
+  html: `<div class="flex items-center gap-4">
+  <span class="loading loading-spinner text-primary"></span>
+  <span class="loading loading-spinner text-secondary"></span>
+  <span class="loading loading-spinner text-accent"></span>
+  <span class="loading loading-spinner text-info"></span>
+  <span class="loading loading-spinner text-success"></span>
+  <span class="loading loading-spinner text-warning"></span>
+  <span class="loading loading-spinner text-error"></span>
+</div>`,
+  name: "loading-colors",
+};

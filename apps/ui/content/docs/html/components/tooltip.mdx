@@ -1,0 +1,34 @@
+---
+title: Tooltip
+description: Show contextual hints when hovering or focusing an element.
+---
+
+Show contextual hints when hovering or focusing an element. Tooltips support semantic colors and any positioning around the trigger.
+
+> The previews below force the tooltip visible so you can see the markup. In production, the `tooltip-content` element is hidden until the parent receives `:hover` or `:focus-visible`, typically via a small JS controller.
+
+<TooltipClassesTable />
+
+## Default Tooltip
+
+Wrap the trigger in `tooltip` and place the floating panel inside `tooltip-content` with a `tooltip-body` for the bubble.
+
+<HtmlPreview name="tooltip-default" />
+
+## Tooltip Colors
+
+Apply semantic colors using `tooltip-primary`, `tooltip-secondary`, `tooltip-accent`, `tooltip-info`, `tooltip-success`, `tooltip-warning`, or `tooltip-error` on the body.
+
+<HtmlPreview name="tooltip-colors" />
+
+## Tooltip Positions
+
+Position the tooltip around the trigger using inline styles or your favorite positioning utility.
+
+<HtmlPreview name="tooltip-positions" />
+
+## Tooltip on Icon Button
+
+Pair tooltips with icon buttons to label them without visible text.
+
+<HtmlPreview name="tooltip-icon" />

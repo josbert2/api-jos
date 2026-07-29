@@ -1,0 +1,32 @@
+---
+title: Validation
+description: Validation classes color form controls and reveal feedback messages.
+---
+
+Validation classes color form controls and reveal feedback messages. Use `is-valid` / `is-invalid` directly on a control, or wrap a form in `.validate` to hook into the browser's native `:valid` / `:invalid` states.
+
+<ValidationClassesTable />
+
+## Valid and Invalid States
+
+Use `is-valid` or `is-invalid` to manually mark a control's status.
+
+<HtmlPreview name="validation-states" />
+
+## Validation Messages
+
+Pair an input with `.success-message` or `.error-message` siblings. They reveal automatically when the input is valid or invalid.
+
+<HtmlPreview name="validation-messages" />
+
+## Native Form Validation
+
+Wrap fields in a `.validate` container to drive validation from native HTML attributes like `required`, `minlength`, or `type="email"`.
+
+<HtmlPreview name="validation-form" />
+
+## Validation on Selection Controls
+
+Validation classes also apply to checkboxes, radios and switches.
+
+<HtmlPreview name="validation-selection" />

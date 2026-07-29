@@ -1,0 +1,24 @@
+/**
+ * FlyonUI Source Index
+ * Importa todos los archivos CSS fuente para desarrollo sin build
+ * Next.js procesará estos archivos con PostCSS automáticamente
+ */
+
+/* ========== BASE ========== */
+
+
+/* ========== THEMES ========== */
+
+
+/* ========== COMPONENTS ========== */
+
+@import "./components/button.css";
+
+
+/* ========== JS PLUGINS VARIANTS ========== */
+
+/* ========== UTILITIES ========== */
+
+
+/* ========== VENDOR ========== */
+

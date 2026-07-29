@@ -8,6 +8,10 @@ const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"CircularXX"', 'system-ui', 'sans-serif'],
+        circular: ['"CircularXX"', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: token('border'),
         input: token('input'),

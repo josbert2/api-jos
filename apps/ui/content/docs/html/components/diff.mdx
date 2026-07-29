@@ -1,0 +1,26 @@
+---
+title: Diff
+description: Diffs reveal a before/after comparison with a draggable handle.
+---
+
+Diff renders two layers stacked on top of each other and lets the user drag the handle to reveal one side or the other. It is great for showing image edits or design changes.
+
+<DiffClassesTable />
+
+## Default
+
+The structure is `diff` + `diff-item-1` + `diff-item-2` + `diff-resizer`. Set an aspect ratio on the parent to keep both layers aligned.
+
+<HtmlPreview name="diff-default" />
+
+## Typography Diff
+
+Compare two text treatments by placing the same content with different styles on each side.
+
+<HtmlPreview name="diff-text" />
+
+## Image Diff
+
+Use any visual content inside each layer. The handle blends seamlessly between the two.
+
+<HtmlPreview name="diff-images" />

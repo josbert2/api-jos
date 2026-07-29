@@ -1,0 +1,32 @@
+---
+title: Stack
+description: Stacks layer multiple elements with a slight offset and depth.
+---
+
+Stack overlaps its children using a small translation and scale to create a layered card effect. Direction modifiers shift the offset to the desired side.
+
+<StackClassesTable />
+
+## Default
+
+The minimal stack just needs the `stack` class. Children are rendered on top of each other with a soft fall-off.
+
+<HtmlPreview name="stack-default" />
+
+## Anchored to Top
+
+Use `stack-top` to flip the offset upward, useful for swipeable card stacks.
+
+<HtmlPreview name="stack-top" />
+
+## Anchored to Side
+
+Use `stack-start` or `stack-end` to bias the offset horizontally.
+
+<HtmlPreview name="stack-side" />
+
+## With Images
+
+Stacks accept any element type, including images.
+
+<HtmlPreview name="stack-images" />

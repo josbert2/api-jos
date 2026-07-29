@@ -1,0 +1,141 @@
+/* flyoui - CSS for HTML components */
+/* Works alongside Tailwind CDN */
+
+:root {
+  /* Colors */
+  --flyo-primary: #2563eb;
+  --flyo-primary-hover: #1d4ed8;
+  --flyo-secondary: #f4f4f5;
+  --flyo-secondary-hover: #e4e4e7;
+  --flyo-destructive: #dc2626;
+  --flyo-destructive-hover: #b91c1c;
+  --flyo-foreground: #18181b;
+  --flyo-background: #ffffff;
+  --flyo-muted: #71717a;
+  --flyo-border: #e4e4e7;
+  
+  /* Border radius */
+  --flyo-radius-sm: 0.25rem;
+  --flyo-radius-md: 0.375rem;
+  --flyo-radius-lg: 0.5rem;
+  --flyo-radius-xl: 0.75rem;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --flyo-foreground: #fafafa;
+    --flyo-background: #09090b;
+    --flyo-secondary: #27272a;
+    --flyo-secondary-hover: #3f3f46;
+    --flyo-border: #27272a;
+    --flyo-muted: #a1a1aa;
+  }
+}
+
+/* Button base */
+.flyo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  border-radius: var(--flyo-radius-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  min-height: 2rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 150ms ease;
+  background-color: var(--flyo-foreground);
+  color: var(--flyo-background);
+}
+
+.flyo-btn:hover {
+  opacity: 0.9;
+}
+
+.flyo-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--flyo-background), 0 0 0 4px var(--flyo-primary);
+}
+
+.flyo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button variants */
+.flyo-btn-primary {
+  background-color: var(--flyo-primary);
+  color: white;
+}
+
+.flyo-btn-primary:hover {
+  background-color: var(--flyo-primary-hover);
+}
+
+.flyo-btn-secondary {
+  background-color: var(--flyo-secondary);
+  color: var(--flyo-foreground);
+}
+
+.flyo-btn-secondary:hover {
+  background-color: var(--flyo-secondary-hover);
+}
+
+.flyo-btn-outline {
+  background-color: transparent;
+  border-color: var(--flyo-border);
+  color: var(--flyo-foreground);
+}
+
+.flyo-btn-outline:hover {
+  background-color: var(--flyo-secondary);
+}
+
+.flyo-btn-ghost {
+  background-color: transparent;
+  color: var(--flyo-foreground);
+}
+
+.flyo-btn-ghost:hover {
+  background-color: var(--flyo-secondary);
+}
+
+.flyo-btn-destructive {
+  background-color: var(--flyo-destructive);
+  color: white;
+}
+
+.flyo-btn-destructive:hover {
+  background-color: var(--flyo-destructive-hover);
+}
+
+/* Button sizes */
+.flyo-btn-sm {
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  min-height: 1.75rem;
+}
+
+.flyo-btn-lg {
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem;
+  min-height: 2.5rem;
+}
+
+.flyo-btn-xl {
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 3rem;
+}
+
+/* Icon button */
+.flyo-btn-icon {
+  padding: 0.5rem;
+  min-height: 2rem;
+  aspect-ratio: 1;
+}

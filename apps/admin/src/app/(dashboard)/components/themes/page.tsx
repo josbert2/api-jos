@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { BUILTIN_THEMES, type BuiltinTheme } from '../themes-data';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ColorsIcon } from '@hugeicons/core-free-icons';
 
 function toSlug(name: string) {
   return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
@@ -85,7 +87,7 @@ export default function ThemesPage() {
     <div className="flex h-full flex-col">
       {/* Search bar */}
       <div
-        className="sticky top-0 z-10 border-b border-border/50 bg-background px-4 py-2.5"
+        className="sticky top-0 z-10 border-b border-border/50 bg-background px-4 py-2.5 flex items-center gap-3"
         style={{ borderBottomWidth: '0.5px' }}
       >
         <input
@@ -96,10 +98,19 @@ export default function ThemesPage() {
           className="w-full max-w-xs rounded-md border border-border bg-muted/40 px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-1 focus:ring-ring transition-colors"
         />
         {search && (
-          <span className="ml-3 text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             {filtered.length} result{filtered.length !== 1 ? 's' : ''}
           </span>
         )}
+        <div className="ml-auto">
+          <Link
+            href="/themes/create"
+            className="flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-border text-xs text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
+          >
+            <HugeiconsIcon icon={ColorsIcon} size={13} />
+            Create theme
+          </Link>
+        </div>
       </div>
 
       {/* Grid */}

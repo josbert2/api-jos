@@ -1,0 +1,435 @@
+/* flyoui - Independent Tailwind 4 CSS */
+@import "tailwindcss";
+
+/* Import flyonui from workspace */
+/* served as static asset from public/css/flyonui.css via <FlyonuiStyles /> */
+/*@import "@coss/flyonui/flyonui.css"; */
+
+@theme {
+  --color-base-100: oklch(99.43% 0.001 286.38);
+  --color-base-200: oklch(97.33% 0.008 271.33);
+  --color-base-300: oklch(48.52% 0.0225 279.09);
+  --color-base-content: oklch(42.06% 0.049 276.53);
+
+  --color-primary: oklch(71.5% 0.065 260);
+  --color-primary-content: oklch(97.05% 0.014 254.6);
+
+  --color-secondary: oklch(70.34% 0.096 302.64);
+  --color-secondary-content: oklch(33.387% 0.04 162.24);
+
+  --color-accent: oklch(74.13% 0.119 29.09);
+  --color-accent-content: oklch(0% 0 0);
+
+  --color-neutral: oklch(71.73% 0.007 17.32);
+  --color-neutral-content: oklch(82.15% 0.055 277.12);
+
+  --color-info: oklch(74.26% 0.056 198.91);
+  --color-info-content: oklch(98.36% 0.014 180.72);
+
+  --color-success: oklch(81.95% 0.112 125.18);
+  --color-success-content: oklch(98.57% 0.031 120.76);
+
+  --color-warning: oklch(81.30% 0.101 68.94);
+  --color-warning-content: oklch(98.73% 0.026 102.21);
+
+  --color-error: oklch(74.13% 0.119 29.09);
+  --color-error-content: oklch(96.94% 0.015 12.42);
+
+  --radius-selector: 1rem;
+  --radius-field: 12px;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@import "../../../packages/flyonui/src/index.css";
+
+/*@plugin "@coss/flyonui";*/
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--flyo-background);
+  --color-foreground: var(--flyo-foreground);
+
+  --color-muted: var(--flyo-muted);
+  --color-muted-foreground: var(--flyo-muted-foreground);
+
+  --color-border: var(--flyo-border);
+  --color-input: var(--flyo-input);
+  --color-ring: var(--flyo-ring);
+  --color-card: var(--flyo-card);
+  --color-card-foreground: var(--flyo-card-foreground);
+  --color-popover: var(--flyo-popover);
+  --color-popover-foreground: var(--flyo-popover-foreground);
+
+  --radius-sm: calc(var(--flyo-radius) - 4px);
+  --radius-md: calc(var(--flyo-radius) - 2px);
+  --radius-lg: var(--flyo-radius);
+  --radius-xl: calc(var(--flyo-radius) + 4px);
+
+  --font-sans: var(--font-sans);
+}
+
+:root {
+  --flyo-radius: 0.625rem;
+  --flyo-background: var(--color-white);
+  --flyo-foreground: var(--color-zinc-900);
+  --flyo-card: var(--color-white);
+  --flyo-card-foreground: var(--color-zinc-900);
+  --flyo-popover: var(--color-white);
+  --flyo-popover-foreground: var(--color-zinc-900);
+
+  --flyo-muted: --alpha(var(--color-black) / 4%);
+  --flyo-muted-foreground: var(--color-zinc-600);
+
+  --flyo-border: --alpha(var(--color-black) / 12%);
+  --flyo-input: --alpha(var(--color-black) / 12%);
+  --flyo-ring: var(--color-zinc-400);
+}
+
+.dark {
+  --flyo-background: var(--color-zinc-950);
+  --flyo-foreground: var(--color-zinc-100);
+  --flyo-card: color-mix(
+    in srgb,
+    var(--color-zinc-900) 80%,
+    var(--color-zinc-950)
+  );
+  --flyo-card-foreground: var(--color-zinc-100);
+  --flyo-popover: var(--color-zinc-900);
+  --flyo-popover-foreground: var(--color-zinc-100);
+
+  --flyo-muted: --alpha(var(--color-white) / 6%);
+  --flyo-muted-foreground: var(--color-zinc-400);
+
+  --flyo-border: --alpha(var(--color-white) / 12%);
+  --flyo-input: --alpha(var(--color-white) / 12%);
+  --flyo-ring: var(--color-zinc-500);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+/* ============================================
+   FLYOUI COMPONENTS
+   ============================================ */
+
+@layer components {
+  /* Scope for flyoui components */
+  .flyoui-scope {
+  }
+}
+
+.after-boder-content::after {
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border: 1px solid color-mix(in oklab, var(--flyo-border) 50%, transparent);
+  background-color: transparent;
+  padding: 20px;
+  position: absolute;
+  inset: -7px;
+  z-index: 9999;
+}
+
+.flyoui-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 19px;
+}
+
+body,
+html {
+  font-family: "pangram";
+  font-weight: 400;
+}
+
+.font-Avenir {
+  font-family: "Avenir", sans-serif !important;
+}
+
+.box-shadow-ln {
+  --tw-shadow:
+    0 1px 1px 0.5px rgba(51, 51, 51, 0.04), 0 3px 3px -1.5px rgba(
+      51,
+      51,
+      51,
+      0.02
+    ), 0 6px 6px -3px rgba(51, 51, 51, 0.04), 0 12px 12px -6px rgba(
+      51,
+      51,
+      51,
+      0.04
+    ), 0 24px 24px -12px rgba(51, 51, 51, 0.04), 0 48px 48px -24px rgba(
+      51,
+      51,
+      51,
+      0.04
+    ), 0 0 0 1px rgba(51, 51, 51, 0.1), inset 0 -1px 1px -0.5px rgba(
+      51,
+      51,
+      51,
+      0.06
+    );
+  --tw-shadow-colored:
+    0 1px 1px 0.5px var(--tw-shadow-color), 0 3px 3px -1.5px var(
+      --tw-shadow-color
+    ), 0 6px 6px -3px var(--tw-shadow-color), 0 12px 12px -6px var(
+      --tw-shadow-color
+    ), 0 24px 24px -12px var(--tw-shadow-color), 0 48px 48px -24px var(
+      --tw-shadow-color
+    ), 0 0 0 1px var(--tw-shadow-color), inset 0 -1px 1px -0.5px var(
+      --tw-shadow-color
+    );
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
+}
+
+.data-pressed\:bg-accent[data-pressed] {
+  background-color: transparent;
+  --tw-shadow:
+    0 1px 1px 0.5px #3333330a, 0 3px 3px -1.5px #33333305, 0 6px 6px -3px #3333330a, 0 12px 12px -6px #3333330a, 0 24px 24px -12px #3333330a, 0 48px 48px -24px #3333330a, 0 0 0 1px #3333331a, inset 0 -1px 1px -0.5px #3333330f;
+  --tw-shadow-colored:
+    0 1px 1px 0.5px var(--tw-shadow-color), 0 3px 3px -1.5px var(
+      --tw-shadow-color
+    ), 0 6px 6px -3px var(--tw-shadow-color), 0 12px 12px -6px var(
+      --tw-shadow-color
+    ), 0 24px 24px -12px var(--tw-shadow-color), 0 48px 48px -24px var(
+      --tw-shadow-color
+    ), 0 0 0 1px var(--tw-shadow-color), inset 0 -1px 1px -0.5px var(
+      --tw-shadow-color
+    );
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
+  color: var(--color-base-content);
+}
+
+.html-tabs button[data-slot] {
+  background-color: transparent;
+}
+
+.html-tabs *[data-slot="tab-indicator"] {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* ============================================
+   🍑 COZY/KAWAII THEME - HTML LAYOUT
+   ============================================ */
+
+.cozy-layout {
+  /* Soft warm cream background with dot pattern */
+  background-color: #f6efed;
+  background-image: radial-gradient(circle, #e0d5d2 1px, transparent 1px);
+  background-size: 20px 20px;
+  min-height: 100vh;
+}
+
+/* Cozy Sidebar Group - scoped to HTML layout */
+[data-slot="sidebar-group-label"] {
+  color: #957c84 !important;
+  font-family: "Fredoka", sans-serif !important;
+  font-size: 1em;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Cozy Sidebar Menu Button - remove ugly gradient */
+.cozy-layout [data-slot="sidebar-menu-button"] {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.cozy-layout [data-slot="sidebar-menu-button"][data-active="true"] {
+  background-image: none !important;
+  color: #767676 !important;
+  border-radius: 9999px;
+}
+
+.cozy-layout [data-slot="sidebar-menu-button"][data-active="true"]::after {
+  content: "•";
+  margin-left: auto;
+  font-size: 2.2em;
+  opacity: 0.8;
+  color: #947db6;
+}
+
+/* Cozy Sidebar */
+.cozy-sidebar {
+  background: oklch(99% 0.005 350);
+  border-right: 1px solid oklch(90% 0.02 320);
+  padding: 1.5rem;
+  border-radius: 0 1.5rem 1.5rem 0;
+}
+
+/* Cozy navigation links - pill style */
+.cozy-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+  color: oklch(35% 0.03 300);
+}
+
+.cozy-nav-link:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px oklch(70% 0.05 300 / 20%);
+}
+
+/* Color variants for nav links */
+.cozy-nav-link--sky {
+  background: oklch(88% 0.08 220);
+  color: oklch(35% 0.05 220);
+}
+.cozy-nav-link--sky:hover {
+  background: oklch(85% 0.1 220);
+}
+
+.cozy-nav-link--lavender {
+  background: oklch(88% 0.08 290);
+  color: oklch(35% 0.05 290);
+}
+.cozy-nav-link--lavender:hover {
+  background: oklch(85% 0.1 290);
+}
+
+.cozy-nav-link--coral {
+  background: oklch(88% 0.1 25);
+  color: oklch(35% 0.05 25);
+}
+.cozy-nav-link--coral:hover {
+  background: oklch(85% 0.12 25);
+}
+
+.cozy-nav-link--mint {
+  background: oklch(88% 0.08 175);
+  color: oklch(35% 0.05 175);
+}
+.cozy-nav-link--mint:hover {
+  background: oklch(85% 0.1 175);
+}
+
+.cozy-nav-link--rose {
+  background: oklch(88% 0.1 350);
+  color: oklch(35% 0.05 350);
+}
+.cozy-nav-link--rose:hover {
+  background: oklch(85% 0.12 350);
+}
+
+.cozy-nav-link--teal {
+  background: oklch(88% 0.08 195);
+  color: oklch(35% 0.05 195);
+}
+.cozy-nav-link--teal:hover {
+  background: oklch(85% 0.1 195);
+}
+
+.cozy-nav-link--peach {
+  background: oklch(88% 0.08 60);
+  color: oklch(35% 0.05 60);
+}
+.cozy-nav-link--peach:hover {
+  background: oklch(85% 0.1 60);
+}
+
+.cozy-nav-link--neutral {
+  background: oklch(92% 0.01 300);
+  color: oklch(40% 0.02 300);
+}
+.cozy-nav-link--neutral:hover {
+  background: oklch(88% 0.015 300);
+}
+
+/* Cozy content area */
+.cozy-content {
+  background: oklch(99% 0.003 350);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin: 1rem;
+  box-shadow:
+    0 4px 6px -1px oklch(70% 0.02 300 / 10%),
+    0 2px 4px -2px oklch(70% 0.02 300 / 10%);
+}
+
+/* Cozy cards */
+.cozy-card {
+  background: oklch(100% 0 0);
+  border: 1px solid oklch(92% 0.015 320);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow:
+    0 1px 3px oklch(70% 0.02 300 / 8%),
+    0 1px 2px oklch(70% 0.02 300 / 12%);
+  transition: all 0.2s ease;
+}
+
+.cozy-card:hover {
+  box-shadow:
+    0 4px 12px oklch(70% 0.02 300 / 15%),
+    0 2px 4px oklch(70% 0.02 300 / 10%);
+  transform: translateY(-2px);
+}
+
+/* Cozy buttons */
+.cozy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.cozy-btn--primary {
+  background: oklch(78% 0.09 220);
+  color: oklch(98% 0.01 220);
+}
+.cozy-btn--primary:hover {
+  background: oklch(72% 0.1 220);
+  box-shadow: 0 4px 12px oklch(78% 0.09 220 / 40%);
+}
+
+.cozy-btn--secondary {
+  background: oklch(75% 0.1 290);
+  color: oklch(98% 0.01 290);
+}
+.cozy-btn--secondary:hover {
+  background: oklch(70% 0.11 290);
+  box-shadow: 0 4px 12px oklch(75% 0.1 290 / 40%);
+}
+
+/* Cozy title styling */
+.cozy-title {
+  font-weight: 600;
+  color: oklch(40% 0.04 300);
+  letter-spacing: -0.02em;
+}
+
+.cozy-subtitle {
+  color: oklch(55% 0.03 300);
+  font-weight: 400;
+}
+
+.cozy-layout *,
+.cozy-layout ::before,
+.cozy-layout ::after {
+  border-color: var(--color-border);
+}

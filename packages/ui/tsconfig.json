@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "composite": true,
+    "incremental": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@coss/ui/*": ["./src/*"]
+    },
+    "types": ["next", "react", "node"]
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "@coss/typescript-config/react-library.json",
+  "include": ["."]
+}

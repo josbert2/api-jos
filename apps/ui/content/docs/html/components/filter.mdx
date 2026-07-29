@@ -1,0 +1,32 @@
+---
+title: Filter
+description: Filters group radio chips together with a reset action.
+---
+
+Filters group radio chips together with a reset action. When a value is picked the rest collapse, and a `filter-reset` button restores the full list.
+
+<FilterClassesTable />
+
+## Default Filter
+
+The base filter wraps a set of `<input type="radio">` chips inside a `.filter` container. Add a `.filter-reset` chip to clear the selection.
+
+<HtmlPreview name="filter-default" />
+
+## Filter with Buttons
+
+Style each radio chip with `btn` and color modifiers to make a filter pill row.
+
+<HtmlPreview name="filter-buttons" />
+
+## Filter with Reset Button
+
+Use a separate `<input type="reset">` styled as a button to reset all selected values.
+
+<HtmlPreview name="filter-reset" />
+
+## Filter with Many Options
+
+Filters scale to as many radio options as needed.
+
+<HtmlPreview name="filter-many" />

@@ -1,0 +1,126 @@
+import { ArrowLeft02Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { findNeighbour } from "fumadocs-core/page-tree";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { DocsTableOfContents } from "@/components/docs-toc";
+import { SiteFooter } from "@/components/site-footer";
+import { htmlSource } from "@/lib/source";
+import { mdxComponents } from "@/mdx-components";
+import { Button } from "@/registry/default/ui/button";
+
+export const revalidate = false;
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return htmlSource.generateParams();
+}
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = htmlSource.getPage(params.slug);
+
+  if (!page) {
+    notFound();
+  }
+
+  const doc = page.data;
+
+  if (!doc.title || !doc.description) {
+    notFound();
+  }
+
+  return {
+    description: doc.description,
+    title: `${doc.title} - coss ui (HTML)`,
+  };
+}
+
+export default async function Page(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = htmlSource.getPage(params.slug);
+  if (!page) {
+    notFound();
+  }
+
+  const doc = page.data;
+  const MDX = doc.body;
+  const neighbours = await findNeighbour(htmlSource.pageTree, page.url);
+
+  return (
+    <div
+      className="flex items-stretch sm:text-[.9375rem] xl:w-full"
+      data-slot="docs"
+    >
+      <div className="after-boder-content overflow-hidden after:-inset-[5px] after:-z-1 relative flex min-w-0 flex-1 flex-col bg-muted/50 bg-clip-padding before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_2px_1px_--theme(--color-black/4%)] after:pointer-events-none after:absolute after:rounded-[calc(var(--radius-2xl)+4px)] after:border after:border-border/50 after:bg-clip-padding max-lg:before:hidden lg:mt-8 lg:mr-4 lg:mb-8 lg:rounded-2xl lg:border dark:after:bg-background/72">
+        <div className="absolute -top-44 -right-[-172px] h-60 w-xl transform-gpu md:right-0 bg-linear-115 from-[#fff1be] from-28% via-[#ee87cb] via-70% to-[#b060ff] rotate-[-10deg] rounded-full blur-3xl" />
+        <div className="-m-px  border bg-background px-4 py-6 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] sm:px-6 lg:rounded-t-2xl lg:rounded-b-xl lg:p-8 dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+          <div className="mx-auto w-full max-w-3xl">
+            <div className="flex min-w-0 flex-1 flex-col gap-8">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="rounded-md bg-orange-500/10 px-2 py-0.5 text-xs font-medium text-orange-600 dark:text-orange-400">
+                    HTML
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <h1 className="scroll-m-20 font-heading text-3xl xl:text-4xl">
+                    {doc.title}
+                  </h1>
+                  {doc.description && (
+                    <p className="text-muted-foreground sm:text-lg">
+                      {doc.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="w-full flex-1 *:data-[slot=alert]:first:mt-0">
+                <MDX components={mdxComponents} />
+              </div>
+            </div>
+            <div className="hidden items-center gap-2 pt-8 sm:flex">
+              {neighbours.previous && (
+                <Button
+                  className="shadow-none"
+                  render={
+                    <Link href={neighbours.previous.url}>
+                      <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} />{" "}
+                      {neighbours.previous.name}
+                    </Link>
+                  }
+                  variant="outline"
+                />
+              )}
+              {neighbours.next && (
+                <Button
+                  className="ms-auto shadow-none"
+                  render={
+                    <Link href={neighbours.next.url}>
+                      {neighbours.next.name}{" "}
+                      <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} />
+                    </Link>
+                  }
+                  variant="outline"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="px-4 py-6 lg:rounded-b-2xl lg:px-8">
+          <SiteFooter />
+        </div>
+      </div>
+      <div className="sticky top-(--header-height) z-30 ms-auto hidden h-[calc(100svh-var(--header-height))] w-72 flex-col overflow-hidden overscroll-none xl:flex">
+        <div className="no-scrollbar flex min-h-0 flex-col gap-2 overflow-y-auto py-2">
+          <div className="h-(--top-spacing) shrink-0" />
+          {doc.toc?.length ? <DocsTableOfContents toc={doc.toc} /> : null}
+        </div>
+      </div>
+    </div>
+  );
+}
